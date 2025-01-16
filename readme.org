@@ -2,8 +2,11 @@
 
 This is a guide to creating the perfect computer for Colin Jaffe. But some of it may be perfect for you, and some of it may be close enough to perfect for you that you can get it the rest of the way on your own.
 
+More than a guide, though, this effectively /is/ my computer system! I'll explain exactly how Real Soon.
+
 ** Things To Configure Next
 
+- Auto-Native Compilation
 - Use-Package and VC-Use-Package
   - always-ensure
   - vc-use-package (until Emacs 30 when it's built in)
@@ -12,11 +15,10 @@ This is a guide to creating the perfect computer for Colin Jaffe. But some of it
 - emacsclient
 - sway
 - Evil elisp bindings
+- Magit
 - General, including gset
 - other evil settings
 - Vertico & Company
-- Auto-Native Compilation
-- Stuff from notes
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 
 ** Git
@@ -57,6 +59,8 @@ This is a guide to creating the perfect computer for Colin Jaffe. But some of it
 #+END_SRC
 
 ** Things To Document
+
+- Stuff from notes.md
 
 ** Waybar
 
