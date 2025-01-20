@@ -13,20 +13,20 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
   - vc-use-package (until Emacs 30 when it's built in - set vc-use-package to use forward-looking API)
   - auto-package-update
 - General, including gset
+- Vertico & Company
 - undo system
 - some basic menus and bindings
 - Evil elisp bindings
 - Evil bindings
   - evil collection
   - 3rd party evil stuff
+  - other evil settings
   - my evil stuff
-- emacsclient
-- sway
-- Evil elisp bindings
+- emacs-in-vim-in-emacs
 - Magit
 - undo system
-- other evil settings
-- Vertico & Company
+- emacsclient
+- sway
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 
 ** Project
@@ -41,6 +41,13 @@ When I open a project, I usually want to open a file immediately. Let's set that
 #+BEGIN_SRC emacs-lisp
   (setq project-switch-commands 'project-find-file)
 #+END_SRC
+
+*** Project Commands to Bind Later
+
+- =project-eshell=
+- =project-remember-under=
+- =project-find-file=
+- 
 
 ** Git
 
