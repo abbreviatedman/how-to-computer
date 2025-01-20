@@ -6,6 +6,7 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
+- project.el
 - Auto-Native Compilation
 - Use-Package and VC-Use-Package
   - always-ensure
@@ -20,6 +21,19 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 - other evil settings
 - Vertico & Company
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
+
+** Project
+
+Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
+
+*** Open A File On Project Open
+
+When I open a project, I usually want to open a file immediately. Let's set that.
+
+#+NAME: project-initial-action
+#+BEGIN_SRC emacs-lisp
+  (setq project-switch-commands 'project-find-file)
+#+END_SRC
 
 ** Git
 
@@ -456,6 +470,7 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<sane-defaults>>
   <<color-theme>>
   <<set-up-emacs-memory-systems>>
+  <<project-initial-action>>
 #+END_SRC
 
 **** Bash Config
