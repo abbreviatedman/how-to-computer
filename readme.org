@@ -1,3 +1,4 @@
+You got cut off in the Limitations of Rainbow Tables section.
 * How To Computer
 
 This is a guide to creating the perfect computer for Colin Jaffe. But some of it may be perfect for you, and some of it may be close enough to perfect for you that you can get it the rest of the way on your own.
@@ -6,18 +7,24 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
-- project.el
 - Auto-Native Compilation
 - Use-Package and VC-Use-Package
   - always-ensure
-  - vc-use-package (until Emacs 30 when it's built in)
-  - set vc-use-package to use forward-looking API
+  - vc-use-package (until Emacs 30 when it's built in - set vc-use-package to use forward-looking API)
   - auto-package-update
+- General, including gset
+- undo system
+- some basic menus and bindings
+- Evil elisp bindings
+- Evil bindings
+  - evil collection
+  - 3rd party evil stuff
+  - my evil stuff
 - emacsclient
 - sway
 - Evil elisp bindings
 - Magit
-- General, including gset
+- undo system
 - other evil settings
 - Vertico & Company
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
