@@ -7,12 +7,7 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
-- Auto-Native Compilation
-- Use-Package and VC-Use-Package
-  - always-ensure
-  - vc-use-package (until Emacs 30 when it's built in - set vc-use-package to use forward-looking API)
-  - auto-package-update
-- General, including gset
+- General
 - Vertico & Company
 - undo system
 - some basic menus and bindings
@@ -29,25 +24,6 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 - sway
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 
-** Project
-
-Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
-
-*** Open A File On Project Open
-
-When I open a project, I usually want to open a file immediately. Let's set that.
-
-#+NAME: project-initial-action
-#+BEGIN_SRC emacs-lisp
-  (setq project-switch-commands 'project-find-file)
-#+END_SRC
-
-*** Project Commands to Bind Later
-
-- =project-eshell=
-- =project-remember-under=
-- =project-find-file=
-- 
 
 ** Git
 
@@ -382,8 +358,56 @@ I may try to do this more automatically through the terminal, but, for now, go t
 
 The greatest operating system ever created.
 
+*** Evil Keybindings Setup
+
+First, let's use General, which commands my army of Evil keybindings. As the name suggests, it also works with leaders.
+
+#+name: define-leader-key
+#+begin_src emacs-lisp
+  (use-package general
+    :init
+    (general-create-definer leader
+      :states '(normal motion visual)
+      :keymaps 'override
+      :prefix "SPC"))
+#+end_src
+
+*** Better Variable Setter
+
+This variable setter from General allows you to treat custom and non-custom variables the same in Emacs.
+
+#+name: gsetq
+#+begin_src emacs-lisp
+  (defvaralias 'gsetq 'general-setq)
+#+end_src
+
+*** Project
+
+Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
+
+**** Open A File On Project Open
+
+When I open a project, I usually want to open a file immediately. Let's set that.
+
+#+NAME: customize-project
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs
+    :init
+    (gsetq project-switch-commands 'project-find-file)
+    :general
+    (leader "SPC" '(project-find-file :which-key "Find file in current project")))
+#+END_SRC
+
+**** Project Commands to Bind Later
+
+- =project-eshell=
+- =project-remember-under=
+- =project-find-file=
+- =project-remove=
 
 *** Package Installation System
+
+**** Package Installation Basics
 
 Set up package installation, as well as draw from the repository for non-GNU packages.
 
@@ -396,13 +420,42 @@ Set up package installation, as well as draw from the repository for non-GNU pac
   (package-refresh-contents)
 #+END_SRC
 
+**** A More Mature System
+
+What we want is, ideally, for Emacs to:
+
+- Configure its packages using a clean, extensible, and already well extended system. (=use-package=, now included in Emacs)
+- Make sure packages are always installed, particularly for when we set up a new system. (=use-package-ensure=)
+- Get packages from version control systems when needed. (=vc-use-package=, soon to be included in Emacs)
+- Auto-update packages on startup, and also on command.
+
+#+NAME: mature-package-setup
+#+BEGIN_SRC emacs-lisp
+  (require 'use-package)
+  (require 'use-package-ensure)
+  (gsetq use-package-always-ensure t)
+  (unless (package-installed-p 'vc-use-package)
+    (package-vc-install "https://github.com/slotThe/vc-use-package"))
+  (require 'vc-use-package)
+  (use-package auto-package-update
+    :init
+    (defun crj--update-all-packages ()
+      (interactive)
+      (package-refresh-contents)
+      (auto-package-update-now-async))
+    :config
+    (gsetq auto-package-update-delete-old-versions t)
+    (gsetq auto-package-update-hide-results t)
+    (auto-package-update-maybe))
+#+END_SRC
+
 *** Avoiding Mixing Init File and Custom File
 
 #+NAME: custom-file-setup
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
     :init
-    (setq custom-file "~/.emacs.d/emacs-custom-file.el")
+    (gsetq custom-file "~/.emacs.d/emacs-custom-file.el")
     (unless (file-exists-p custom-file)
       (write-region "" nil custom-file)))
 #+END_SRC
@@ -432,7 +485,7 @@ Set up package installation, as well as draw from the repository for non-GNU pac
 
 #+NAME: sane-defaults
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t
+  (gsetq inhibit-startup-message t
 	visible-bell t)
 
   (menu-bar-mode -1)
@@ -445,7 +498,7 @@ Set up package installation, as well as draw from the repository for non-GNU pac
 
 #+NAME: color-theme
 #+BEGIN_SRC emacs-lisp
-  (setq modus-themes-italic-constructs t
+  (gsetq modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-org-blocks 'gray-background
 	modus-themes-completions (quote
@@ -467,25 +520,13 @@ Set up package installation, as well as draw from the repository for non-GNU pac
 #+NAME: set-up-emacs-memory-systems
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
-  (setq history-length 100)
+  (gsetq history-length 100)
   (savehist-mode 1)
 #+END_SRC
 
 *** Index
 
 Here is where I tangle all the source blocks in this file, in the order I'd like and to the files I want.
-
-**** Emacs Config
-
-#+BEGIN_SRC emacs-lisp :lexical yes :tangle ~/.emacs.d/init.el :mkdirp yes :noweb tangle
-  <<package-setup>>
-  <<custom-file-setup>>
-  <<evil-mode>>
-  <<sane-defaults>>
-  <<color-theme>>
-  <<set-up-emacs-memory-systems>>
-  <<project-initial-action>>
-#+END_SRC
 
 **** Bash Config
 
@@ -519,4 +560,19 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   fi
 
   <<keychain-settings>>
+#+END_SRC
+
+**** Emacs Config
+
+#+BEGIN_SRC emacs-lisp :lexical yes :tangle ~/.emacs.d/init.el :mkdirp yes :noweb tangle
+  <<package-setup>>
+  <<mature-package-setup>>
+  <<custom-file-setup>>
+  <<define-leader-key>>
+  <<gsetq>>
+  <<evil-mode>>
+  <<sane-defaults>>
+  <<color-theme>>
+  <<set-up-emacs-memory-systems>>
+  <<customize-project>>
 #+END_SRC
