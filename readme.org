@@ -6,7 +6,6 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
-- undo system
 - Vertico & Company
 - Org and Sync
 - General
@@ -478,6 +477,9 @@ What we want is, ideally, for Emacs to:
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :ensure t
+    :init
+    (set-var evil-want-fine-undo t
+	     evil-undo-system 'undo-redo)
     :config (evil-mode 1))
 #+END_SRC
 
