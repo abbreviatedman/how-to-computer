@@ -6,9 +6,9 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
-- Start git keychain integration on startup.
-- Vertico & Company
 - Org and Sync
+- Magit
+- AI
 - General
 - some basic menus and bindings
 - Evil elisp bindings
@@ -18,11 +18,16 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
   - other evil settings
   - my evil stuff
 - emacs-in-vim-in-emacs
-- Magit
-- undo system
+- helpful
 - emacsclient
 - sway
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
+- Completion
+  - LSP
+  - treesitter
+  - Consult
+  - Marginalia
+  - Embark
 
 
 ** Git
@@ -358,7 +363,42 @@ I may try to do this more automatically through the terminal, but, for now, go t
 
 The greatest operating system ever created.
 
+*** Look and Feel
+
+**** Line Numbers
+
+It's been a long time since I felt this way, but I bet I would have been shocked at some point in my life to learn how much I would someday care about the numbers that go next to the lines in a document.
+
+***** Basic Line Number Settings
+
+Sets up line numbers to be (almost) everywhere, with the major exception being terminal modes, where they're largely unnecessary.
+
+Also sets up line numbers to be relative to the current line number. I like to use relative line numbers because they make line-wise work easier if you're using Evil Mode. Which I do.
+
+#+name: line-number-settings
+#+begin_src emacs-lisp :lexical yes
+  (use-package emacs
+    :init
+    (defun crj--turn-off-line-numbers ()
+  "Turns off line numbers. Meant tobe added as a hook."
+      (display-line-numbers-mode 0))
+
+    (setq display-line-numbers-type 'relative
+	  magit-disable-line-numbers nil
+	  magit-section-disable-line-numbers nil)
+    (global-display-line-numbers-mode t)
+    (defconst crj--hooks-for-modes-without-line-numbers '(term-mode-hook
+							  vterm-mode-hook
+							  shell-mode-hook
+							  treemacs-mode-hook
+							  eshell-mode-hook))
+    (dolist (hook crj--hooks-for-modes-without-line-numbers)
+      (add-hook hook #'crj--turn-off-line-numbers)))
+#+end_src
+
 *** Evil Keybindings Setup
+
+**** Leader Key
 
 First, let's use General, which commands my army of Evil keybindings. As the name suggests, it also works with leaders.
 
@@ -370,6 +410,19 @@ First, let's use General, which commands my army of Evil keybindings. As the nam
       :states '(normal motion visual)
       :keymaps 'override
       :prefix "SPC"))
+#+end_src
+
+**** Handling Escape Better
+
+#+name: improve-escape
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (defun crj--escape-plus ()
+      (evil-ex-nohighlight))
+
+    (advice-add 'evil-force-normal-state :after #'crj--escape-plus)
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
 #+end_src
 
 *** Better Variable Setter
@@ -527,39 +580,234 @@ What we want is, ideally, for Emacs to:
   (savehist-mode 1)
 #+END_SRC
 
+*** Completion
+
+**** Minibuffer Completion
+
+Vertico is a popular Emacs minibuffer search interface. It gives you a simple but powerful UI for accessing whatever you're looking to access, and it does it with a minimum of code, mostly focusing on extending the built-in Emacs interface. This makes it fast to use and, importantly, easy for the devs to debug.
+
+What we'll do to configure it is:
+
+- Set "reverse" as the default interface setup.
+- Tun on the ability to toggle interface setup between reverse and regular view.
+- Add the Vertico extension ~vertico-repeat~ and a keybinding to repeat previous searches.
+- Set Emacs to remember that repeat history.
+- Set the results of searches to wrap from bottom to top.
+- Fix some weirdness caused by the interplay of directories and completion.
+- Add keybindings for
+  - more Vim-like ~j~/~k~ scrolling
+  - scrolling by pages
+  - going up a directory with a single delete
+
+Here that all is:
+
+#+name: minibuffer-selection-interface
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode)
+    (vertico-multiform-mode)
+    (setq vertico-cycle t
+	  vertico-multiform-categories '((t reverse)))
+
+    :config
+    (add-to-list 'load-path (expand-file-name "vertico/extensions/" user-emacs-directory))
+    (require 'vertico-directory)
+    (require 'vertico-repeat)
+    (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
+    (with-eval-after-load 'savehist
+      (add-to-list 'savehist-additional-variables 'vertico-repeat-history))
+    (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
+    :general
+    (leader "'" '(vertico-repeat-select :which-key "Repeat previous vertico searches."))
+    (:keymaps 'vertico-map
+     "C-k" #'vertico-next
+     "C-j" #'vertico-previous
+     "C-S-p" #'vertico-scroll-up
+     "C-S-n" #'vertico-scroll-down
+     "C-S-k" #'vertico-scroll-up
+     "C-S-j" #'vertico-scroll-down
+     "RET" #'vertico-directory-enter
+     "DEL" #'vertico-directory-delete-char
+     "M-DEL" #'vertico-directory-delete-word))
+#+end_src
+
+**** Filtering Minibuffer Searches
+
+The Orderless package is powerful and fascinating. It decides how the data you're searching is filtered as you type, and you can even search in different ways in the same search.
+
+Here's an example using the setup below.
+
+- I start a fuzzy search for files in a project.
+- I type in part of the name of the file I want to open.
+- Then I notice that some similarly named results are in a directory I want to exclude.
+- So I type in a ~!~ (a pretty universal developer symbol for "not") and the name of that directory, and those results are filtered out.
+- Then I realize I want only files that are in a directory called controller. So I type ~^~ (developer for "starts with") and ~/controller~. Finally, I want only JavaScript files, so I type ~$~ (developer for "ends with") and then type ~js~, and boom!
+
+Once you're used to this speedy filtering process, it /greatly/ cuts down on the time spent searching for whatever it is you want to do.
+
+#+name: search-filtering
+#+begin_src emacs-lisp :lexical yes
+  (use-package orderless
+    :init
+    (defun crj--vertico-orderless-dispatch (pattern _index _total)
+      "The set of dispatch commands I use for filtering searches.
+
+  Taken from the Doom Emacs project, which has added so much useful configuration code to the Emacs world. Thanks, Doom contributors!"
+      (cond
+       ;; Ensure $ works with Consult commands, which add disambiguation suffixes
+       ((string-suffix-p "$" pattern)
+	`(orderless-regexp . ,(concat (substring pattern 0 -1) "[\x200000-\x300000]*$")))
+       ;; Ignore single !
+       ((string= "!" pattern) `(orderless-literal . ""))
+       ;; Without literal
+       ((string-prefix-p "!" pattern) `(orderless-without-literal . ,(substring pattern 1)))
+       ;; Character folding
+       ((string-prefix-p "%" pattern) `(char-fold-to-regexp . ,(substring pattern 1)))
+       ((string-suffix-p "%" pattern) `(char-fold-to-regexp . ,(substring pattern 0 -1)))
+       ;; Initialism matching
+       ((string-prefix-p "`" pattern) `(orderless-initialism . ,(substring pattern 1)))
+       ((string-suffix-p "`" pattern) `(orderless-initialism . ,(substring pattern 0 -1)))
+       ;; Literal matching
+       ((string-prefix-p "=" pattern) `(orderless-literal . ,(substring pattern 1)))
+       ((string-suffix-p "=" pattern) `(orderless-literal . ,(substring pattern 0 -1)))
+       ;; Flex matching
+       ((string-prefix-p "~" pattern) `(orderless-flex . ,(substring pattern 1)))
+       ((string-suffix-p "~" pattern) `(orderless-flex . ,(substring pattern 0 -1)))))
+
+    (set-var completion-ignore-case t
+	  completion-styles '(orderless basic)
+	  completion-category-defaults nil
+	  orderless-component-separator "#"
+	  orderless-style-dispatchers '(crj--vertico-orderless-dispatch)
+	  orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp)
+	  completion-category-overrides '((file (styles partial-completion)))))
+
+#+end_src
+
 *** Index
+
+I'm using `use-package` to install and manage my Emacs packages. I am not using `straight`.
+
+I would like to install Vertico with its extensions. How can I load its extensions, which are in a subdirectory?
 
 Here is where I tangle all the source blocks in this file, in the order I'd like and to the files I want.
 
 **** Bash Config
 
-#+BEGIN_SRC sh :tangle ~/.profile :noweb tangle
-  # ~/.profile: executed by the command interpreter for login shells.
-  # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
-  # exists.
-  # see /usr/share/doc/bash/examples/startup-files for examples.
-  # the files are located in the bash-doc package.
+#+BEGIN_SRC sh :tangle ~/.bashrc :noweb tangle
+  # ~/.bashrc: executed by bash(1) for non-login shells.
+  # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+  # for examples
 
-  # the default umask is set in /etc/profile; for setting the umask
-  # for ssh logins, install and configure the libpam-umask package.
-  #umask 022
+  # If not running interactively, don't do anything
+  case $- in
+      ,*i*) ;;
+      ,*) return;;
+  esac
 
-  # if running bash
-  if [ -n "$BASH_VERSION" ]; then
-      # include .bashrc if it exists
-      if [ -f "$HOME/.bashrc" ]; then
-	  . "$HOME/.bashrc"
+  # don't put duplicate lines or lines starting with space in the history.
+  # See bash(1) for more options
+  HISTCONTROL=ignoreboth
+
+  # append to the history file, don't overwrite it
+  shopt -s histappend
+
+  # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+  HISTSIZE=1000
+  HISTFILESIZE=2000
+
+  # check the window size after each command and, if necessary,
+  # update the values of LINES and COLUMNS.
+  shopt -s checkwinsize
+
+  # If set, the pattern "**" used in a pathname expansion context will
+  # match all files and zero or more directories and subdirectories.
+  #shopt -s globstar
+
+  # make less more friendly for non-text input files, see lesspipe(1)
+  #[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+  # set variable identifying the chroot you work in (used in the prompt below)
+  if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+      debian_chroot=$(cat /etc/debian_chroot)
+  fi
+
+  # set a fancy prompt (non-color, unless we know we "want" color)
+  case "$TERM" in
+      xterm-color|*-256color) color_prompt=yes;;
+  esac
+
+  # uncomment for a colored prompt, if the terminal has the capability; turned
+  # off by default to not distract the user: the focus in a terminal window
+  # should be on the output of commands, not on the prompt
+  #force_color_prompt=yes
+
+  if [ -n "$force_color_prompt" ]; then
+      if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	  # We have color support; assume it's compliant with Ecma-48
+	  # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	  # a case would tend to support setf rather than setaf.)
+	  color_prompt=yes
+      else
+	  color_prompt=
       fi
   fi
 
-  # set PATH so it includes user's private bin if it exists
-  if [ -d "$HOME/bin" ] ; then
-      PATH="$HOME/bin:$PATH"
+  if [ "$color_prompt" = yes ]; then
+      PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+  else
+      PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+  fi
+  unset color_prompt force_color_prompt
+
+  # If this is an xterm set the title to user@host:dir
+  case "$TERM" in
+      xterm*|rxvt*)
+	  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	  ;;
+      ,*)
+	  ;;
+  esac
+
+  # enable color support of ls and also add handy aliases
+  if [ -x /usr/bin/dircolors ]; then
+      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+      alias ls='ls --color=auto'
+      #alias dir='dir --color=auto'
+      #alias vdir='vdir --color=auto'
+
+      #alias grep='grep --color=auto'
+      #alias fgrep='fgrep --color=auto'
+      #alias egrep='egrep --color=auto'
   fi
 
-  # set PATH so it includes user's private bin if it exists
-  if [ -d "$HOME/.local/bin" ] ; then
-      PATH="$HOME/.local/bin:$PATH"
+  # colored GCC warnings and errors
+  #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+  # some more ls aliases
+  #alias ll='ls -l'
+  #alias la='ls -A'
+  #alias l='ls -CF'
+
+  # Alias definitions.
+  # You may want to put all your additions into a separate file like
+  # ~/.bash_aliases, instead of adding them here directly.
+  # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+  if [ -f ~/.bash_aliases ]; then
+      . ~/.bash_aliases
+  fi
+
+  # enable programmable completion features (you don't need to enable
+  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+  # sources /etc/bash.bashrc).
+  if ! shopt -oq posix; then
+      if [ -f /usr/share/bash-completion/bash_completion ]; then
+	  . /usr/share/bash-completion/bash_completion
+      elif [ -f /etc/bash_completion ]; then
+	  . /etc/bash_completion
+      fi
   fi
 
   <<keychain-settings>>
@@ -578,4 +826,8 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<color-theme>>
   <<set-up-emacs-memory-systems>>
   <<customize-project>>
+  <<minibuffer-selection-interface>>
+  <<search-filtering>>
+  <<improve-escape>>
+  <<line-number-settings>>
 #+END_SRC
