@@ -393,7 +393,7 @@ When I open a project, I usually want to open a file immediately. Let's set that
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
     :init
-    (gsetq project-switch-commands 'project-find-file)
+    (general-setq project-switch-commands 'project-find-file)
     :general
     (leader "SPC" '(project-find-file :which-key "Find file in current project")))
 #+END_SRC
@@ -433,7 +433,7 @@ What we want is, ideally, for Emacs to:
 #+BEGIN_SRC emacs-lisp
   (require 'use-package)
   (require 'use-package-ensure)
-  (gsetq use-package-always-ensure t)
+  (general-setq use-package-always-ensure t)
   (unless (package-installed-p 'vc-use-package)
     (package-vc-install "https://github.com/slotThe/vc-use-package"))
   (require 'vc-use-package)
@@ -444,8 +444,8 @@ What we want is, ideally, for Emacs to:
       (package-refresh-contents)
       (auto-package-update-now-async))
     :config
-    (gsetq auto-package-update-delete-old-versions t)
-    (gsetq auto-package-update-hide-results t)
+    (general-setq auto-package-update-delete-old-versions t)
+    (general-setq auto-package-update-hide-results t)
     (auto-package-update-maybe))
 #+END_SRC
 
@@ -455,7 +455,7 @@ What we want is, ideally, for Emacs to:
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
     :init
-    (gsetq custom-file "~/.emacs.d/emacs-custom-file.el")
+    (general-setq custom-file "~/.emacs.d/emacs-custom-file.el")
     (unless (file-exists-p custom-file)
       (write-region "" nil custom-file)))
 #+END_SRC
@@ -485,7 +485,7 @@ What we want is, ideally, for Emacs to:
 
 #+NAME: sane-defaults
 #+BEGIN_SRC emacs-lisp
-  (gsetq inhibit-startup-message t
+  (general-setq inhibit-startup-message t
 	visible-bell t)
 
   (menu-bar-mode -1)
@@ -498,7 +498,7 @@ What we want is, ideally, for Emacs to:
 
 #+NAME: color-theme
 #+BEGIN_SRC emacs-lisp
-  (gsetq modus-themes-italic-constructs t
+  (general-setq modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-org-blocks 'gray-background
 	modus-themes-completions (quote
@@ -520,7 +520,7 @@ What we want is, ideally, for Emacs to:
 #+NAME: set-up-emacs-memory-systems
 #+BEGIN_SRC emacs-lisp
   (recentf-mode 1)
-  (gsetq history-length 100)
+  (general-setq history-length 100)
   (savehist-mode 1)
 #+END_SRC
 
@@ -565,11 +565,11 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
 **** Emacs Config
 
 #+BEGIN_SRC emacs-lisp :lexical yes :tangle ~/.emacs.d/init.el :mkdirp yes :noweb tangle
+  <<define-leader-key>>
+  <<gsetq>>
   <<package-setup>>
   <<mature-package-setup>>
   <<custom-file-setup>>
-  <<define-leader-key>>
-  <<gsetq>>
   <<evil-mode>>
   <<sane-defaults>>
   <<color-theme>>
