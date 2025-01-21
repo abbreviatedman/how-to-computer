@@ -6,9 +6,10 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
-- General
-- Vertico & Company
 - undo system
+- Vertico & Company
+- Org and Sync
+- General
 - some basic menus and bindings
 - Evil elisp bindings
 - Evil bindings
