@@ -6,6 +6,7 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
+- Start git keychain integration on startup.
 - Vertico & Company
 - Org and Sync
 - General
