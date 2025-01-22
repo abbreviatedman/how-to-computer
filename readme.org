@@ -6,10 +6,11 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Things To Configure Next
 
+- Org
+- syntax highlight symbols and numbers
 - Tangling options in this file
   - mkdir yes
 - spell check
-- Org
 - Sync
 - Magit
 - AI
