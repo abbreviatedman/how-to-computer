@@ -4,35 +4,6 @@ This is a guide to creating the perfect computer for Colin Jaffe. But some of it
 
 More than a guide, though, this effectively /is/ my computer system! I'll explain exactly how Real Soon.
 
-** Things To Configure Next
-
-- Org
-- syntax highlight symbols and numbers
-- Tangling options in this file
-  - mkdir yes
-- spell check
-- Sync
-- Magit
-- AI
-- General
-- some basic menus and bindings
-- Evil elisp bindings
-- Evil bindings
-  - evil collection
-  - 3rd party evil stuff
-  - other evil settings
-  - my evil stuff
-- emacs-in-vim-in-emacs
-- helpful
-- emacsclient
-- sway
-- Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
-- Completion
-  - LSP
-  - treesitter
-  - Consult
-  - Marginalia
-  - Embark
 
 ** Fonts
 
