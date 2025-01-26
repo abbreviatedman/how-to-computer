@@ -216,10 +216,6 @@ There! Now you have good-looking fonts, each with their own special purpose. And
 	user = abbreviatedman
 #+END_SRC
 
-** Things To Document
-
-- Stuff from notes.md
-
 ** Waybar
 
 This is the configuration for Waybar, Sway's status bar. It tells me things like the time and general computer state--battery, network connection, spare memory, etc.
@@ -228,21 +224,15 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
 
 #+BEGIN_SRC jsonc :tangle ~/.config/waybar/config.jsonc
 {
-    // "layer": "top", // Waybar at top layer
      "position": "left", // Waybar position (top|bottom|left|right)
-    // "height": 30, // Waybar height (to be removed for auto height)
     "width": 10, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
     "modules-left": [
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",
         "custom/media"
     ],
-    // "modules-center": [
-        // "sway/window"
-    // ],
     "modules-right": [
         "mpd",
         "idle_inhibitor",
@@ -261,23 +251,6 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "tray",
         "custom/power"
     ],
-    // Modules configuration
-    // "sway/workspaces": {
-    //     "disable-scroll": true,
-    //     "all-outputs": true,
-    //     "warp-on-scroll": false,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
@@ -331,11 +304,9 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         }
     },
     "tray": {
-        // "icon-size": 21,
         "spacing": 10
     },
     "clock": {
-        // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
@@ -347,21 +318,16 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "format": "{}% "
     },
     "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
         "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
         "format": "{temperatureC}°C {icon}",
         "format-icons": ["", "", ""]
     },
     "backlight": {
-        // "device": "acpi_video1",
         "format": "{percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
     "battery": {
         "states": {
-            // "good": 95,
             "warning": 30,
             "critical": 15
         },
@@ -370,8 +336,6 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
         "format-icons": ["", "", "", "", ""]
     },
     "battery#bat2": {
@@ -389,7 +353,6 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
       }
     },
     "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid}\n({signalStrength}%) ",
         "format-ethernet": "{ipaddr}/{cidr} ",
         "tooltip-format": "{ifname}\nvia {gwaddr} ",
@@ -398,7 +361,6 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "format-alt": "{ifname}:\n{ipaddr}/{cidr}"
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon}\n{format_source}",
         "format-bluetooth": "{volume}% {icon}\n{format_source}",
         "format-bluetooth-muted": " {icon}\n{format_source}",
@@ -426,7 +388,6 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         },
         "escape": true,
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
     "custom/power": {
         "format" : "⏻ ",
@@ -558,7 +519,7 @@ Sets up line numbers to be (almost) everywhere, with the major exception being t
 Also sets up line numbers to be relative to the current line number. I like to use relative line numbers because they make line-wise work easier if you're using Evil Mode. Which I do.
 
 #+name: line-number-settings
-#+begin_src emacs-lisp :lexical yes
+#+begin_src emacs-lisp
   (use-package emacs
     :init
     (defun crj--turn-off-line-numbers ()
@@ -698,12 +659,14 @@ What we want is, ideally, for Emacs to:
 
 **** Org Mode
 
+***** Org/Evil Integration
+
 Let's integrate Evil Mode with Org mode with this nice package.
 
 Mostly this is self-explanatory code if you dive into the variables. I do some extra keybinding work, including disabling their keybindings for some commands I like defined globally.
 
 #+name: evil-org-mode-configuration
-#+begin_src emacs-lisp :lexical yes
+#+begin_src emacs-lisp
   (use-package evil-org
     :diminish
     :after (evil org)
@@ -956,7 +919,7 @@ Here's an example using the setup below.
 Once you're used to this speedy filtering process, it /greatly/ cuts down on the time spent searching for whatever it is you want to do.
 
 #+name: search-filtering
-#+begin_src emacs-lisp :lexical yes
+#+begin_src emacs-lisp
   (use-package orderless
     :init
     (defun crj--vertico-orderless-dispatch (pattern _index _total)
@@ -1052,9 +1015,43 @@ Only some minor settings changes from the basic setup:
     (leader "gr" '(browse-at-remote :which-key "Browse repo's remote.")))
 #+end_src
 
+** Things To Document
+
+- Stuff from notes.md
+- wormhole - apt install
+
+** Things To Configure Next
+
+- Magit
+- Org
+- Sync
+- spell check
+- AI
+- syntax highlight symbols and numbers
+- some basic menus and bindings
+- Evil elisp bindings
+- Evil bindings
+  - evil collection
+  - 3rd party evil stuff
+  - other evil settings
+  - my evil stuff
+- emacs-in-vim-in-emacs
+- helpful
+- emacsclient
+- sway
+- Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
+- Completion
+  - LSP
+  - treesitter
+  - Consult
+  - Marginalia
+  - Embark
+
+** Index
+
 Here is where I tangle all the source blocks in this file, in the order I'd like and to the files I want.
 
-**** Bash Config
+*** Bash Config
 
 #+BEGIN_SRC sh :tangle ~/.bashrc :noweb tangle
   # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -1174,9 +1171,9 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<keychain-settings>>
 #+END_SRC
 
-**** Emacs Config
+*** Emacs Config
 
-#+BEGIN_SRC emacs-lisp :lexical yes :tangle ~/.emacs.d/init.el :mkdirp yes :noweb tangle
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el :noweb tangle
   <<define-leader-key>>
   <<set-var>>
   <<lexical-scope>>
@@ -1184,12 +1181,15 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<mature-package-setup>>
   <<custom-file-setup>>
   <<evil-mode>>
+  <<evil-integration-with-third-party-packages>>
+  <<evil-style-commenting>>
   <<sane-defaults>>
   <<color-theme>>
   <<set-up-emacs-memory-systems>>
   <<customize-project>>
   <<minibuffer-selection-interface>>
   <<search-filtering>>
+  <<in-buffer-completion>>
   <<improve-escape>>
   <<line-number-settings>>
   <<markdown-setup>>
@@ -1199,7 +1199,9 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<set-fixed-pitch-modes>>
   <<make-line-numbers-monospaced>>
   <<evil-org-mode-configuration>>
+  <<tangle-settings>>
   <<variable-pitch-setup>>
+  <<word-wrap>>
   <<magit>>
 #+END_SRC
 
