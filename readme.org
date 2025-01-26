@@ -1147,7 +1147,7 @@ Only some minor settings changes from the basic setup:
 
 ** Things To Configure Next
 
-- Magit
+- LSP
 - Org
 - Sync
 - spell check
