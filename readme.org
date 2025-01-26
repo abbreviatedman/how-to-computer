@@ -821,15 +821,70 @@ Let's see if we can hit these customizations quickly. We:
 
 *** Evil Mode
 
+**** Basic Setup
+
 #+NAME: evil-mode
 #+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :ensure t
-    :init
-    (set-var evil-want-fine-undo t
-	     evil-undo-system 'undo-redo)
-    :config (evil-mode 1))
+    (use-package evil
+      :ensure t
+      :init
+      (set-var evil-want-keybinding t
+	       evil-want-fine-undo t
+	       evil-undo-system 'undo-redo)
+      :config (evil-mode 1))
 #+END_SRC
+
+**** Evil Bindings For Other Packages
+
+This famous package contains Evil bindings for many many other packages.
+
+#+name: evil-integration-with-third-party-packages
+#+begin_src emacs-lisp :lexical yes
+  (use-package evil-collection
+    :diminish 'unimpaired
+    :diminish 'evil-collection-unimpaired-mode
+    :after evil
+    :init
+    (evil-collection-init)
+    (evil-collection-quickrun-setup)
+    :general
+    (general-unbind '(normal visual motion) evil-collection-unimpaired-mode-map
+      "]l"
+      "[l"
+      "[m"
+      "]m"
+      "[e"
+      "]e")
+
+    (general-def '(normal visual motion) :prefix "["
+      "B" '(org-previous-block :which-key "Go to previous org block.")
+      "m" '(evil-collection-unimpaired-move-text-up :which-key "Move text up.")
+      "e" '(evil-collection-unimpaired-previous-error :which-key "Go to previous error."))
+    (general-def '(normal visual motion) :prefix "]"
+      "B" '(org-next-block :which-key "Go to next org block.")
+      "m" '(evil-collection-unimpaired-move-text-down :which-key "Move text down.")
+      "e" '(evil-collection-unimpaired-next-error :which-key "Go to next error.")))
+    #+end_src
+
+**** Evil-Style Commenting
+
+Evil Nerd Commenter is a really great way to handle comments!
+
+#+name: evil-style-commenting
+#+begin_src emacs-lisp :lexical yes
+  (use-package evil-nerd-commenter
+    :after evil
+    :general
+    ([remap comment-line] #'evilnc-comment-or-uncomment-lines)
+    (:keymaps 'normal :prefix "g"
+     "c" '(evilnc-comment-operator :which-key "Toggle comment.")
+     "C" '(evilnc-copy-and-comment-operator :which-key "Copy and comment.")
+     "K" '(evilnc-comment-box :which-key "Create comment box."))
+    (general-def 'normal evil-inner-text-objects-map
+      "c" #'evilnc-inner-comment)
+    (general-def 'normal evil-outer-text-objects-map
+      "c" #'evilnc-outer-comment))
+#+end_src
 
 *** Some Sane Defaults
 
