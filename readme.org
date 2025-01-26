@@ -1043,6 +1043,10 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 
 **** In-Buffer Completion
 
+***** Corfu
+
+Corfu is the close-to-bear-metal-but-still-powerful in-buffer completion package. It's increasingly popular in the Emacs community for good reason.
+
 #+name: in-buffer-completion
 #+begin_src emacs-lisp
   (use-package corfu
