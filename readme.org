@@ -191,13 +191,13 @@ There! Now you have good-looking fonts, each with their own special purpose. And
   eval `keychain --agents ssh --eval ~/.ssh/id_ed25519`
 #+END_SRC
 
-- Add the contents of =~/.ssh/id_ed25519.pub= as a new SSH key in GitHub's settings.
+- Add the contents of =~/.ssh/id_ed25519.pub= as a new SSH key in GitHub and GitLab's settings.
 - Create a Git Config file with the following contents:
 
 #+BEGIN_SRC ini :tangle ~/.gitconfig
 [user]
 	name = Colin Jaffe
-	email = abbreviatedma@posteo.net
+	email = abbreviatedman@posteo.net
 [core]
 	excludesFile = ~/.gitignore-global
 	ignorecase = false
@@ -576,6 +576,15 @@ Also sets up line numbers to be relative to the current line number. I like to u
 							  eshell-mode-hook))
     (dolist (hook crj--hooks-for-modes-without-line-numbers)
       (add-hook hook #'crj--turn-off-line-numbers)))
+#+end_src
+
+**** Wrapping Lines
+
+Turn on what in other editors would just be called "word wrap", but of course it isn't in Emacs.
+
+#+name: word-wrap
+#+begin_src emacs-lisp
+  (global-visual-line-mode 1)
 #+end_src
 
 *** Evil Keybindings Setup
@@ -986,10 +995,62 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 #+end_src
 
 *** Index
+*** Git
 
-I'm using `use-package` to install and manage my Emacs packages. I am not using `straight`.
+Like many (most?) emacsers, I use Magit to manage Git. It's the best interface to Git--as powerful as the CLI, with a better keyboard-driven interface.
 
-I would like to install Vertico with its extensions. How can I load its extensions, which are in a subdirectory?
+Only some minor settings changes from the basic setup:
+
+- Turn on insert state and off Copilot mode when writing Git commits. Though I know there are some AI features focused on commit messages and maybe I should check them out, right now plain Copilot is /really/ bad at commit messages.
+- Make Magit a little more Evil by reclaiming the leader key, ~h~ and ~l~, and the low-digit count keys.
+- Turn on confirmation.
+- Make the window setup a little tidier.
+- And add some shortcuts to both the general Magit menus and things I do more often, like clone and switch/create branches.
+- Use a complimentary package to open the browser for the current repo--or even the current file and line.
+
+#+name: magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :preface
+    (defun crj--set-up-git-commit-buffer ()
+      (evil-insert-state)
+      (copilot-mode -1))
+
+    :init
+    (add-hook 'git-commit-mode-hook 'crj--set-up-git-commit-buffer)
+    (set-var evil-collection-magit-want-horizontal-movement t
+		  magit-bury-buffer-function #'magit-restore-window-configuration
+		  magit-no-confirm nil
+		  magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
+		  forge-add-default-bindings nil)
+    :commands magit-status
+    :general
+    (:keymaps '(magit-mode-map
+		   magit-blame-read-only-mode-map
+		   magit-section-mode-map
+		   magit-diff-mode-map)
+     :states '(insert normal)
+      "1" #'digit-argument
+      "2" #'digit-argument
+      "3" #'digit-argument
+      "4" #'digit-argument)
+    (with-editor-mode-map
+     "C-c C-c" '(with-editor-finish :which-key "Finish editing.")
+     "C-c c" '(with-editor-finish :which-key "Finish editing.")
+     "C-c '" '(with-editor-finish :which-key "Finish editing.")
+     "C-c k" '(with-editor-cancel :which-key "Cancel editing.")
+     "C-c C-k" '(with-editor-cancel :which-key "Cancel editing."))
+    (leader
+      "gg" '(magit-status :which-key "Launch Git interface.")
+      "gm" '(magit-dispatch :which-key "Show Git HUD.")
+      "gb" '(magit-branch-or-checkout :which-key "Switch or create Git branch.")
+      "gi" '(magit-init :which-key "Initialize a Git repo.")
+      "gc" '(magit-clone :which-key "Git clone.")))
+
+  (use-package browse-at-remote
+    :general
+    (leader "gr" '(browse-at-remote :which-key "Browse repo's remote.")))
+#+end_src
 
 Here is where I tangle all the source blocks in this file, in the order I'd like and to the files I want.
 
@@ -1118,6 +1179,7 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
 #+BEGIN_SRC emacs-lisp :lexical yes :tangle ~/.emacs.d/init.el :mkdirp yes :noweb tangle
   <<define-leader-key>>
   <<set-var>>
+  <<lexical-scope>>
   <<package-setup>>
   <<mature-package-setup>>
   <<custom-file-setup>>
@@ -1137,4 +1199,7 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<set-fixed-pitch-modes>>
   <<make-line-numbers-monospaced>>
   <<evil-org-mode-configuration>>
+  <<variable-pitch-setup>>
+  <<magit>>
 #+END_SRC
+
