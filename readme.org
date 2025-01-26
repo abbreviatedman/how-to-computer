@@ -690,6 +690,28 @@ Mostly this is self-explanatory code if you dive into the variables. I do some e
 	      "gj" #'org-forward-element))
 #+end_src
 
+***** Tangle Settings
+
+For now, all we're specifying is that when a directory doesn't exist in a file path we're tangling, we should make that directory.
+
+#+name: tangle-settings
+#+begin_src emacs-lisp
+  (use-package org
+    :config
+    (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes")))
+#+end_src
+
+***** Emacs Lisp Code Block Settings
+
+All Emacs Lisp should have lexical scope, by default.
+
+#+name: lexical-scope
+#+begin_src emacs-lisp
+  (use-package org
+    :init
+    (set-var org-babel-default-header-args:emacs-lisp '((:lexical . "yes"))))
+#+end_src
+
 **** Markdown
 
 The not-quite-as-good-as-Org-but-more-universally-spoken markup language.
