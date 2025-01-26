@@ -7,30 +7,31 @@ More than a guide, though, this effectively /is/ my computer system! I'll explai
 
 ** Fonts
 
+Here are the steps to get my current collection of fonts.
+
 Download Input Sans from the [[https://input.djr.com/][Input Homepage]].
 
-=cd= into the directory and run =unzip= on the zipfile.
+=cd= into the directory they're in (probably Downloads!) and run =unzip= on the zipfile.
 
-Make a local fonts directory with the following command:
+Make a local fonts directory and move all Input Sans fonts into it with the following commands:
 
-=mkdir -p ~/.local/share/fonts=
-
-Move the fonts into the directory with:
-
-=mv [path to InputSans directory]/*.ttf ~/.local/share/fonts=
+#+begin_src sh
+  mkdir -p ~/.local/share/fonts
+  mv [path to InputSans directory]/*.ttf ~/.local/share/fonts
+#+end_src
 
 Install the following fonts:
 
 #+begin_src sh
   sudo apt install -y \
-  fonts-noto
-  fonts-font-awesome
-  fonts-cardo
+       fonts-noto \
+       fonts-font-awesome \
+       fonts-cardo
 #+end_src
 
 Then place this as your fontconfig config file in =~/.config/fontconfig/fonts.conf=:
 
-#+begin_src xml :tangle ~/.config/fontconfig/fonts.conf :mkdirp yes
+#+begin_src xml :tangle ~/.config/fontconfig/fonts.conf
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
 <fontconfig>
@@ -61,6 +62,8 @@ Then place this as your fontconfig config file in =~/.config/fontconfig/fonts.co
 </fontconfig>
 #+end_src
 
+Let's define our default fonts for Emacs.
+
 #+name: font-definitions
 #+begin_src emacs-lisp
   (use-package emacs
@@ -70,7 +73,7 @@ Then place this as your fontconfig config file in =~/.config/fontconfig/fonts.co
     (defvar crj--variable-pitch-font "Cardo")
     (defvar crj--coding-font crj--variable-pitch-coding-font)
     (defvar crj--emoji-font "Noto Color Emoji")
-    (defvar crj--default-font-size 140)
+    (defvar crj--default-font-size 180)
 
     :config
     (when (member "Noto Color Emoji" (font-family-list))
@@ -86,7 +89,7 @@ Then place this as your fontconfig config file in =~/.config/fontconfig/fonts.co
 
     (set-face-attribute 'fixed-pitch nil
 			:font crj--coding-font
-			:height 1.0)
+			:height 0.8)
 
     (set-face-attribute 'variable-pitch nil
 			:font crj--variable-pitch-font
@@ -94,7 +97,15 @@ Then place this as your fontconfig config file in =~/.config/fontconfig/fonts.co
 			:weight 'regular))
 #+end_src
 
-Now, set /some/ modes to use a fixed pitch font:
+Let's set our prose files to use variable pitch as their main fonts.
+
+#+name: variable-pitch-setup
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook #'variable-pitch-mode)
+  (add-hook 'markdown-mode-hook #'variable-pitch-mode)
+#+end_src
+
+Now, set /some/ modes to use a fixed pitch font. This is for places where indenting to match characters in above lines is meaningful, which is suprisingly rare.
 
 #+name: set-fixed-pitch-modes
 #+begin_src emacs-lisp
@@ -110,7 +121,6 @@ Now, set /some/ modes to use a fixed pitch font:
 
     (defconst crj--fixed-pitch-mode-hooks
       '(emacs-lisp-mode-hook
-	vterm-mode-hook
 	calendar-mode-hook
 	proced-mode-hook
 	cfw:calendar-mode-hook
@@ -143,7 +153,7 @@ Now, set /some/ modes to use a fixed pitch font:
       (add-hook hook #'crj--use-fixed-pitch)))
 #+end_src
 
-And make line numbers monospaced:
+And make line numbers monospaced, so they don't jump around when they go from single-digit to double and so on.
 
 #+name: make-line-numbers-monospaced
 #+begin_src emacs-lisp
@@ -166,6 +176,8 @@ And make line numbers monospaced:
     :init
     (add-hook 'emacs-startup-hook #'crj-make-line-number-face-monospace))
 #+end_src
+
+There! Now you have good-looking fonts, each with their own special purpose. And you also feel special now! Special and weird and unique and fully fully fontified.
 
 ** Git
 
