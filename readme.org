@@ -1034,7 +1034,6 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 
 #+end_src
 
-*** Index
 *** Git
 
 Like many (most?) emacsers, I use Magit to manage Git. It's the best interface to Git--as powerful as the CLI, with a better keyboard-driven interface.
