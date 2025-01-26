@@ -4,6 +4,14 @@ This is a guide to creating the perfect computer for Colin Jaffe. But some of it
 
 More than a guide, though, this effectively /is/ my computer system! I'll explain exactly how Real Soon.
 
+** Terminals
+
+Exporting the path variable sets up all the path settings I perform later in this doc.
+
+#+name: export-path
+#+begin_src sh
+  export PATH
+#+end_src
 
 ** Fonts
 
@@ -1294,6 +1302,7 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   fi
 
   <<keychain-settings>>
+  <<export-path>>
 #+END_SRC
 
 *** Emacs Config
