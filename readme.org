@@ -1031,7 +1031,56 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 	  orderless-style-dispatchers '(crj--vertico-orderless-dispatch)
 	  orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp)
 	  completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
 
+**** In-Buffer Completion
+
+#+name: in-buffer-completion
+#+begin_src emacs-lisp
+  (use-package corfu
+    :init
+    (set-var corfu-cycle t
+	     corfu-auto t
+	     corfu-preselect 'prompt
+	     corfu-separator ?#
+	     corfu-on-exact-match nil
+	     corfu-popupinfo-delay nil)
+    (corfu-popupinfo-mode 1)
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history)
+    (global-corfu-mode)
+    (general-unbind corfu-map "RET")
+    :general
+    (:states 'insert
+	     "C-n" nil
+	     "C-p" nil)
+    (corfu-map "TAB" #'corfu-next
+	       [tab] #'corfu-next
+	       "S-TAB" #'corfu-previous
+	       [backtab] #'corfu-previous
+	       "<escape>" nil
+	       "C-n" #'corfu-next
+	       "C-p" #'corfu-previous
+	       "C-S-n" #'corfu-scroll-up
+	       "C-S-p" #'corfu-scroll-down
+	       "C-S-j" #'corfu-scroll-up
+	       "C-S-k" #'corfu-scroll-down
+	       "C-g" #'corfu-quit
+	       "C-<tab>" #'corfu-popupinfo-toggle))
+
+  (use-package kind-icon
+    :after corfu
+    :init
+    (set-var kind-icon-use-icons t
+	     kind-icon-default-face 'corfu-default
+	     kind-icon-blend-background nil
+	     kind-icon-blend-frac 0.08)
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+  (use-package emacs
+    :init
+    (setq tab-always-indent 'complete))
 #+end_src
 
 *** Git
