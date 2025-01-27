@@ -3602,6 +3602,34 @@ Now install the Rust crate using =cargo= in your terminal:
   cargo install emacs-lsp-booster
 #+end_src
 
+***** Copilot
+
+To get in-buffer suggestions as you type from GitHub Copilot, you must first have a GitHub account. You must also have =npm=.
+
+After you've installed the below package, you need to run:
+- =M-x copilot-install-server=, which uses NPM to install it
+- followed by =M-x copilot-login=, which will display and copy to the clipboard a code to use, as well as launch your default browser and try to log into GitHub to authenticate Copilot. You'll use the code to do so.
+
+#+name: copilot-setup
+#+begin_src emacs-lisp
+  (use-package copilot
+    :vc (copilot :url "https://github.com/copilot-emacs/copilot.el")
+    :config
+    (add-to-list 'copilot-major-mode-alist '("rjsx" . "javascriptreact"))
+    :general
+    (leader
+      "tC" '(global-copilot-mode :which-key "Toggle copilot globally.")
+      "tc" '(copilot-mode :which-key "Toggle copilot for current buffer."))
+    (copilot-mode-map
+     "M-RET" #'copilot-accept-completion
+     "M-<tab>" #'copilot-next-completion
+     "M-<iso-lefttab>" #'copilot-previous-completion
+     "M-o" #'copilot-panel-complete
+     "M-w" #'copilot-accept-completion-by-word
+     "M-l" #'copilot-accept-completion-by-line
+     "M-p" #'copilot-accept-completion-by-paragraph))
+#+end_src
+
 *** Emacs Git Integration
 
 Like many (most?) emacsers, I use Magit to manage Git. It's the best interface to Git--as powerful as the CLI, with a better keyboard-driven interface.
