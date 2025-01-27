@@ -638,27 +638,30 @@ This is a custom feature from Andrey Listopadov, from [[https://andreyor.st/post
 
 #+name: customized-project-root-identification
 #+begin_src emacs-lisp
-  (defconst crj--project-root-markers
-    '(".git" "package.json")
-    "Files or directories that indicate the root of a project.
+  (use-package emacs
+    :preface
+    (defconst crj--project-root-markers
+      '(".git" "package.json")
+      "Files or directories that indicate the root of a project.
 
   Currently just git- and npm-controlled directories
 
   But this is extensible in the future.")
 
-  (defun crj--project-root-p (path)
-    "Check if the current PATH has any of the project root markers."
-    (catch 'found
-      (dolist (marker project-root-markers)
-	(when (file-exists-p (concat path marker))
-	  (throw 'found marker)))))
+    (defun crj--project-root-p (path)
+      "Check if the current PATH has any of the project root markers."
+      (catch 'found
+	(dolist (marker crj--project-root-markers)
+	  (when (file-exists-p (concat path marker))
+	    (throw 'found marker)))))
 
-  (defun crj--project-find-root (path)
-    "Search up the PATH for `project-root-markers'."
-    (when-let ((root (locate-dominating-file path #'project-root-p)))
-      (cons 'transient (expand-file-name root))))
-
-  (add-to-list 'project-find-functions #'project-find-root)
+    (defun crj--project-find-root (path)
+      "Search up the PATH for `project-root-markers'."
+      (when-let ((root (locate-dominating-file path #'crj--project-root-p)))
+	(cons 'transient (expand-file-name root))))
+    :config
+    (with-eval-after-load 'project
+	(add-to-list 'project-find-functions #'crj--project-find-root)))
 #+end_src
 
 **** Project Commands to Bind Later
