@@ -1343,15 +1343,15 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
 *** Emacs Config
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el :noweb tangle
-  <<define-leader-key>>
-  <<set-var>>
-  <<lexical-scope>>
   <<package-setup>>
   <<emacs-env-integration>>
   <<mature-package-setup>>
   <<custom-file-setup>>
   <<evil-mode>>
+  <<define-leader-key>>
   <<evil-integration-with-third-party-packages>>
+  <<set-var>>
+  <<lexical-scope>>
   <<evil-style-commenting>>
   <<sane-defaults>>
   <<color-theme>>
