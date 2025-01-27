@@ -1142,7 +1142,60 @@ Corfu is the close-to-bare-metal-but-still-powerful in-buffer completion package
     (setq tab-always-indent 'complete))
 #+end_src
 
-*** Git
+***** LSP
+
+We'll configure Language Server Protocol integration using the now-built-into-Emacs package Eglot.
+
+#+name: lsp-setup
+#+begin_src emacs-lisp
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  (use-package eglot
+    :init
+    (general-add-hook '(rjsx-mode-hook typescript-mode-hook clojure-mode-hook) #'eglot-ensure)
+    (set-var completion-category-overrides '((eglot (styles orderless))
+					(eglot-capf (styles orderless))))
+    :general
+    (leader
+      "cc" '(eglot :which-key "Run eglot in project root.")
+      "cr" '(eglot-rename :which-key "Rename symbol in project.")))
+
+  (use-package eglot-booster
+    :vc (eglot-booster :url "https://github.com/jdtsmith/eglot-booster")
+    :after eglot
+    :config (eglot-booster-mode))
+
+  (use-package cape
+      :after eglot
+      :config
+      (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
+#+end_src
+
+****** Eglot Booster
+
+Emacs is single-threaded, which is a problem for LSP access. This Rust crate/Emacs package combo creates a separate process for handling LSP, then passes it to Emacs.
+
+First, we need to install it.
+
+Install Rust if you don't already have it by running this in your terminal:
+
+#+begin_src sh
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+#+end_src
+
+Then we'll add to our path in =.bashrc= so that Rust's =cargo= commands are executable:
+
+#+name: cargo-path
+#+begin_src sh
+  PATH="$HOME/.cargo/bin:$PATH"
+#+end_src
+
+Now install the Rust crate using =cargo= in your terminal:
+
+#+begin_src sh
+  cargo install emacs-lsp-booster
+#+end_src
+
+*** Emacs Git Integration
 
 Like many (most?) emacsers, I use Magit to manage Git. It's the best interface to Git--as powerful as the CLI, with a better keyboard-driven interface.
 
@@ -1403,5 +1456,6 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<variable-pitch-setup>>
   <<word-wrap>>
   <<magit>>
+  <<lsp-setup>>
 #+END_SRC
 
