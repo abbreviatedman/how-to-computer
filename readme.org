@@ -1252,6 +1252,40 @@ Only some minor settings changes from the basic setup:
     (leader "gr" '(browse-at-remote :which-key "Browse repo's remote.")))
 #+end_src
 
+*** Programming Languages
+
+** JavaScript
+
+For JS, I use RJSX Mode for its support of JSX. There are some good alternatives, I hear, so I may check them out at some point, but this works for me.
+
+#+name: javascript-setup
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (setq js-indent-level 2
+	  js2-strict-missing-semi-warning nil))
+
+  (use-package rjsx-mode
+    :preface
+    (defun crj--auto-close-jsx-fragments (n)
+      "Inserts matching JSX fragment.
+
+  Credit: Yuri Pieters in this GitHub issue:
+
+  https://github.com/felipeochoa/rjsx-mode/issues/112#issuecomment-773660200"
+      (if (or (/= n 1) (not (and (eq (char-before) ?<) (eq (char-after) ?/)))) 't
+	(insert ?> ?<)
+	(backward-char)))
+    :gfhook
+    #'turn-off-flyspell
+    :init
+    (advice-add #'rjsx-electric-gt :before-while #'crj--auto-close-jsx-fragments)
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . rjsx-mode))
+    (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode)))
+#+end_src
+
 ** Things To Document
 
 - Stuff from notes.md
@@ -1456,6 +1490,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<variable-pitch-setup>>
   <<word-wrap>>
   <<magit>>
+  <<javascript-setup>>
   <<lsp-setup>>
 #+END_SRC
 
