@@ -603,6 +603,15 @@ This variable setter from General allows you to treat custom and non-custom vari
   (defalias 'set-var 'general-setq)
 #+end_src
 
+*** Terminal Integration
+
+Let's set Emacs up to get our environment variables correctly:
+
+#+name: emacs-env-integration
+#+begin_src emacs-lisp
+  (when (memq window-system '(mac ns x pgtk))
+    (exec-path-from-shell-initialize))
+#+end_src
 *** Project
 
 Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
@@ -1199,7 +1208,19 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
 
 *** Bash Config
 
-#+BEGIN_SRC sh :tangle ~/.bashrc :noweb tangle
+First, our =.bash_profile= file should have all our paths, as well as our keychain setup.
+
+#+name: bash_profile
+#+begin_src sh :tangle ~/.bash_profile :noweb tangle
+  <<cargo-path>>
+  <<export-path>>
+  <<keychain-settings>>
+#+end_src
+
+We should also make sure our =.bashrc= file loads that =.bash_profile= code.
+
+#+name: bashrc
+#+BEGIN_SRC sh :tangle ~/.bashrc
   # ~/.bashrc: executed by bash(1) for non-login shells.
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
   # for examples
@@ -1314,8 +1335,9 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
       fi
   fi
 
-  <<keychain-settings>>
-  <<export-path>>
+  if [ -f ~/.bash_profile ]; then
+      . ~/.bash_profile
+  fi
 #+END_SRC
 
 *** Emacs Config
@@ -1325,6 +1347,7 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
   <<set-var>>
   <<lexical-scope>>
   <<package-setup>>
+  <<emacs-env-integration>>
   <<mature-package-setup>>
   <<custom-file-setup>>
   <<evil-mode>>
