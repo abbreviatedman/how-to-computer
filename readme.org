@@ -3113,6 +3113,14 @@ Before evaluating the below, it's important to install =hunspell= with:
 **** Org Mode
 
 ***** Basic Settings
+
+#+name: org-settings
+#+begin_src emacs-lisp
+(use-package org
+  :init
+  (set-var org-startup-folded 'show2levels))
+#+end_src
+
 ***** Org/Evil Integration
 
 Let's integrate Evil Mode with Org mode with this nice package.
