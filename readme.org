@@ -4,7 +4,68 @@ This is a guide to creating the perfect computer for Colin Jaffe. But some of it
 
 More than a guide, though, this effectively /is/ my computer system! I'll explain exactly how Real Soon.
 
-** Terminals
+** General Computer Setup
+
+So you bought yourself a new computer! Did you really need to? I hope you really needed to!
+
+The reason I'm writing this document is that I lost my ThinkPad, bought a Pocket Reform that I almost immediately messed up by remapping the keys in such a way that I can't use its weird startup keyboard shortcut, and then somehow (still not sure how) deeply messed up the system that was on my Galago Pro.
+
+So now I've wiped the Galago Pro and goddamn if I'm not going to configure it the right way this time, and make sure that when this happens again--and, obviously, that's a when not an if--I'll be more ready to start from scratch.
+
+*** What System To Use?
+
+I'm writing this document assuming you're using a Debian GNU+Linux system. That will make these directions match up perfectly if you are. However, with some minor tweaks you can use this setup with any Linux system, or, with more tweaks, macOS or Windows.
+
+*** Debian Package Sources
+
+The first thing you should do on a Debian system on a computer where software availability is more important than stability is switch to the Debian Unstable package sources.
+
+#+BEGIN_SRC sh :tangle /sudo::/etc/apt/sources.list
+  deb https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
+  deb-src https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware test
+#+END_SRC
+
+*** Set Up Password Entry Properly
+
+I'm not a security expert. I'm not sure I'm really an expert in any computer system or sub-system, frankly--I'm more a dilettante than a delver.
+
+All of which is to say that probably this section is wrong.
+
+**** Set Sudo Privileges Up Right
+
+If you find yourself unable to do sudo things without changing to root, this is how you can set things up to do sudo things without changing to root.
+
+Your sudoers file (=/etc/sudoers= on Debian) has the following line:
+
+#+BEGIN_SRC
+root ALL=(ALL:ALL) ALL
+#+END_SRC
+
+What this does is say that the root user has those privileges.
+
+After it, you should add an equivalent line, but with your username in place of =root=:
+
+Let's test it by running =sudo visudo=, which should open the sudoers file in your default editor with sudo privileges.
+
+**** Switching From No Password Feedback To Masked Password Feedback
+
+By default, sudo password entry gives you no feedback as you type the password. No characters appear at all, as if you're not typing. This can be quite confusing the first time you encounter it, and leaves you more prone to mistyping your password. It's /annoying/, and the reason we do it, so that no one looking over our shoulder knows our password's length, is a truly useless security measure.
+
+In the sudoers file, let's fix that. Use =sudo visudo= to open it up again, and change this line:
+
+#+BEGIN_SRC
+  Defaults env_reset
+#+END_SRC
+
+to:
+
+#+BEGIN_SRC
+  Defaults env_reset,pwfeedback
+#+END_SRC
+
+Now when you type your passwords in the command line, you'll get asterisks for each character you type.
+
+*** Terminals
 
 Exporting the path variable sets up all the path settings I perform later in this doc.
 
@@ -412,70 +473,17 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
 }
 #+END_SRC
 
-** General Computer Setup
-
-So you bought yourself a new computer! Did you really need to? I hope you really needed to!
-
-The reason I'm writing this document is that I lost my ThinkPad, bought a Pocket Reform that I almost immediately messed up by remapping the keys in such a way that I can't use its weird startup keyboard shortcut, and then somehow (still not sure how) deeply messed up the system that was on my Galago Pro.
-
-So now I've wiped the Galago Pro and goddamn if I'm not going to configure it the right way this time, and make sure that when this happens again--and, obviously, that's a when not an if--I'll be more ready to start from scratch.
-
-*** What System To Use?
-
-I'm writing this document assuming you're using a Debian GNU+Linux system. That will make these directions match up perfectly if you are. However, with some minor tweaks you can use this setup with any Linux system, or, with more tweaks, macOS or Windows.
-
-*** Set Up Password Entry Properly
-
-I'm not a security expert. I'm not sure I'm really an expert in any computer system or sub-system, frankly--I'm more a dilettante than a delver.
-
-All of which is to say that probably this section is wrong.
-
-**** Set Sudo Privileges Up Right
-
-If you find yourself unable to do sudo things without changing to root, this is how you can set things up to do sudo things without changing to root.
-
-Your sudoers file (=/etc/sudoers= on Debian) has the following line:
-
-#+BEGIN_SRC
-root ALL=(ALL:ALL) ALL
-#+END_SRC
-
-What this does is say that the root user has those privileges.
-
-After it, you should add an equivalent line, but with your username in place of =root=:
-
-Let's test it by running =sudo visudo=, which should open the sudoers file in your default editor with sudo privileges.
-
-**** Switching From No Password Feedback To Masked Password Feedback
-
-By default, sudo password entry gives you no feedback as you type the password. No characters appear at all, as if you're not typing. This can be quite confusing the first time you encounter it, and leaves you more prone to mistyping your password. It's /annoying/, and the reason we do it, so that no one looking over our shoulder knows our password's length, is a truly useless security measure.
-
-In the sudoers file, let's fix that. Use =sudo visudo= to open it up again, and change this line:
-
-#+BEGIN_SRC
-  Defaults env_reset
-#+END_SRC
-
-to:
-
-#+BEGIN_SRC
-  Defaults env_reset,pwfeedback
-#+END_SRC
-
-Now when you type your passwords in the command line, you'll get asterisks for each character you type.
-
-** Debian Package Sources
-
-The first thing you should do on a Debian system on a computer where software availability is more important than stability is switch to the Debian Unstable package sources.
-
-#+BEGIN_SRC sh :tangle /sudo::/etc/apt/sources.list
-  deb https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
-  deb-src https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware test
-#+END_SRC
-
 ** VS Code
 
 I may try to do this more automatically through the terminal, but, for now, go to VS Code's site and download their =.deb= file. Then run =sudo apt install [path to .deb file]=, and you're good.
+
+** Node
+
+To install Node on Debian, you'll want to run:
+
+#+begin_src sh
+  sudo apt install -y nodejs npm
+#+end_src
 
 ** Emacs
 
@@ -647,7 +655,7 @@ What we want is, ideally, for Emacs to:
 #+BEGIN_SRC emacs-lisp
   (require 'use-package)
   (require 'use-package-ensure)
-  (set-var use-package-always-ensure t)
+  (setq use-package-always-ensure t)
   (unless (package-installed-p 'vc-use-package)
     (package-vc-install "https://github.com/slotThe/vc-use-package"))
   (require 'vc-use-package)
@@ -658,10 +666,10 @@ What we want is, ideally, for Emacs to:
       (package-refresh-contents)
       (auto-package-update-now-async))
     :config
-    (set-var auto-package-update-delete-old-versions t)
-    (set-var auto-package-update-hide-results t)
+    (setq auto-package-update-delete-old-versions t
+	  auto-package-update-hide-results t)
     (auto-package-update-maybe))
-#+END_SRC
+    #+END_SRC
 
 *** Working With Non-Code Text
 
@@ -717,7 +725,7 @@ All Emacs Lisp should have lexical scope, by default.
 #+begin_src emacs-lisp
   (use-package org
     :init
-    (set-var org-babel-default-header-args:emacs-lisp '((:lexical . "yes"))))
+    (setq org-babel-default-header-args:emacs-lisp '((:lexical . "yes"))))
 #+end_src
 
 **** Markdown
@@ -775,9 +783,9 @@ Let's see if we can hit these customizations quickly. We:
     ;; #'variable-pitch-mode
     :init
     (set-var markdown-indent-on-enter 'indent-and-new-item
-	  markdown-list-indent-width 2
-	  markdown-fontify-code-blocks-natively t
-	  markdown-asymmetric-header t)
+	     markdown-list-indent-width 2
+	     markdown-fontify-code-blocks-natively t
+	     markdown-asymmetric-header t)
     :config
     (add-to-list 'markdown-code-lang-modes '("javascript" . rjsx-mode))
     :general
@@ -800,8 +808,8 @@ Let's see if we can hit these customizations quickly. We:
     :ghook ('(markdown-mode-hook gfm-mode-hook))
     :general
     (:keymaps 'evil-markdown-mode-map
-     :states '(insert emacs)
-     "C-d" nil))
+	      :states '(insert emacs)
+	      "C-d" nil))
 #+end_src
 
 *** Avoiding Mixing Init File and Custom File
@@ -810,7 +818,7 @@ Let's see if we can hit these customizations quickly. We:
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
     :init
-    (set-var custom-file "~/.emacs.d/emacs-custom-file.el")
+    (setq custom-file "~/.emacs.d/emacs-custom-file.el")
     (unless (file-exists-p custom-file)
       (write-region "" nil custom-file)))
 #+END_SRC
@@ -833,14 +841,16 @@ Let's see if we can hit these customizations quickly. We:
 
 #+NAME: evil-mode
 #+BEGIN_SRC emacs-lisp
-    (use-package evil
-      :ensure t
-      :init
-      (set-var evil-want-keybinding t
-	       evil-want-fine-undo t
-	       evil-undo-system 'undo-redo)
-      :config (evil-mode 1))
-#+END_SRC
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-keybinding nil
+	  evil-want-fine-undo t)
+    :custom (evil-undo-system 'undo-redo)
+    :config
+    (evil-mode 1)
+    (setq evil-want-keybinding t))
+    #+END_SRC
 
 **** Evil Bindings For Other Packages
 
@@ -872,7 +882,7 @@ This famous package contains Evil bindings for many many other packages.
       "B" '(org-next-block :which-key "Go to next org block.")
       "m" '(evil-collection-unimpaired-move-text-down :which-key "Move text down.")
       "e" '(evil-collection-unimpaired-next-error :which-key "Go to next error.")))
-    #+end_src
+#+end_src
 
 **** Evil-Style Commenting
 
@@ -885,9 +895,9 @@ Evil Nerd Commenter is a really great way to handle comments!
     :general
     ([remap comment-line] #'evilnc-comment-or-uncomment-lines)
     (:keymaps 'normal :prefix "g"
-     "c" '(evilnc-comment-operator :which-key "Toggle comment.")
-     "C" '(evilnc-copy-and-comment-operator :which-key "Copy and comment.")
-     "K" '(evilnc-comment-box :which-key "Create comment box."))
+	      "c" '(evilnc-comment-operator :which-key "Toggle comment.")
+	      "C" '(evilnc-copy-and-comment-operator :which-key "Copy and comment.")
+	      "K" '(evilnc-comment-box :which-key "Create comment box."))
     (general-def 'normal evil-inner-text-objects-map
       "c" #'evilnc-inner-comment)
     (general-def 'normal evil-outer-text-objects-map
@@ -899,7 +909,7 @@ Evil Nerd Commenter is a really great way to handle comments!
 #+NAME: sane-defaults
 #+BEGIN_SRC emacs-lisp
   (set-var inhibit-startup-message t
-	visible-bell t)
+	   visible-bell t)
 
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -912,17 +922,17 @@ Evil Nerd Commenter is a really great way to handle comments!
 #+NAME: color-theme
 #+BEGIN_SRC emacs-lisp
   (set-var modus-themes-italic-constructs t
-	modus-themes-bold-constructs t
-	modus-themes-org-blocks 'gray-background
-	modus-themes-completions (quote
-				  ((matches . (intense background underline bold))
-				   (selection . (accented intense bold))))
+	   modus-themes-bold-constructs t
+	   modus-themes-org-blocks 'gray-background
+	   modus-themes-completions (quote
+				     ((matches . (intense background underline bold))
+				      (selection . (accented intense bold))))
 
-	modus-themes-headings '((0 . (variable-pitch  1.8))
-				(1 . (variable-pitch  1.8))
-				(2 . (variable-pitch  1.6))
-				(3 . (variable-pitch  1.4))
-				(4 . (variable-pitch  1.2))))
+	   modus-themes-headings '((0 . (variable-pitch  1.8))
+				   (1 . (variable-pitch  1.8))
+				   (2 . (variable-pitch  1.6))
+				   (3 . (variable-pitch  1.4))
+				   (4 . (variable-pitch  1.2))))
 
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme 'modus-operandi t)
@@ -978,15 +988,15 @@ Here that all is:
     :general
     (leader "'" '(vertico-repeat-select :which-key "Repeat previous vertico searches."))
     (:keymaps 'vertico-map
-     "C-k" #'vertico-next
-     "C-j" #'vertico-previous
-     "C-S-p" #'vertico-scroll-up
-     "C-S-n" #'vertico-scroll-down
-     "C-S-k" #'vertico-scroll-up
-     "C-S-j" #'vertico-scroll-down
-     "RET" #'vertico-directory-enter
-     "DEL" #'vertico-directory-delete-char
-     "M-DEL" #'vertico-directory-delete-word))
+	      "C-k" #'vertico-next
+	      "C-j" #'vertico-previous
+	      "C-S-p" #'vertico-scroll-up
+	      "C-S-n" #'vertico-scroll-down
+	      "C-S-k" #'vertico-scroll-up
+	      "C-S-j" #'vertico-scroll-down
+	      "RET" #'vertico-directory-enter
+	      "DEL" #'vertico-directory-delete-char
+	      "M-DEL" #'vertico-directory-delete-word))
 #+end_src
 
 **** Filtering Minibuffer Searches
@@ -1006,7 +1016,7 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 #+name: search-filtering
 #+begin_src emacs-lisp
   (use-package orderless
-    :init
+    :preface
     (defun crj--vertico-orderless-dispatch (pattern _index _total)
       "The set of dispatch commands I use for filtering searches.
 
@@ -1031,21 +1041,20 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
        ;; Flex matching
        ((string-prefix-p "~" pattern) `(orderless-flex . ,(substring pattern 1)))
        ((string-suffix-p "~" pattern) `(orderless-flex . ,(substring pattern 0 -1)))))
-
+    :init
     (set-var completion-ignore-case t
-	  completion-styles '(orderless basic)
-	  completion-category-defaults nil
-	  orderless-component-separator "#"
-	  orderless-style-dispatchers '(crj--vertico-orderless-dispatch)
-	  orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp)
-	  completion-category-overrides '((file (styles partial-completion)))))
+	     completion-styles '(orderless basic)
+	     orderless-component-separator "#"
+	     orderless-style-dispatchers '(crj--vertico-orderless-dispatch)
+	     orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp)
+	     completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
 **** In-Buffer Completion
 
 ***** Corfu
 
-Corfu is the close-to-bear-metal-but-still-powerful in-buffer completion package. It's increasingly popular in the Emacs community for good reason.
+Corfu is the close-to-bare-metal-but-still-powerful in-buffer completion package. It's increasingly popular in the Emacs community for good reason.
 
 #+name: in-buffer-completion
 #+begin_src emacs-lisp
@@ -1119,21 +1128,21 @@ Only some minor settings changes from the basic setup:
     :init
     (add-hook 'git-commit-mode-hook 'crj--set-up-git-commit-buffer)
     (set-var evil-collection-magit-want-horizontal-movement t
-		  magit-bury-buffer-function #'magit-restore-window-configuration
-		  magit-no-confirm nil
-		  magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
-		  forge-add-default-bindings nil)
+	     magit-bury-buffer-function #'magit-restore-window-configuration
+	     magit-no-confirm nil
+	     magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
+	     forge-add-default-bindings nil)
     :commands magit-status
     :general
     (:keymaps '(magit-mode-map
-		   magit-blame-read-only-mode-map
-		   magit-section-mode-map
-		   magit-diff-mode-map)
-     :states '(insert normal)
-      "1" #'digit-argument
-      "2" #'digit-argument
-      "3" #'digit-argument
-      "4" #'digit-argument)
+		magit-blame-read-only-mode-map
+		magit-section-mode-map
+		magit-diff-mode-map)
+	      :states '(insert normal)
+	      "1" #'digit-argument
+	      "2" #'digit-argument
+	      "3" #'digit-argument
+	      "4" #'digit-argument)
     (with-editor-mode-map
      "C-c C-c" '(with-editor-finish :which-key "Finish editing.")
      "C-c c" '(with-editor-finish :which-key "Finish editing.")
@@ -1166,6 +1175,8 @@ Only some minor settings changes from the basic setup:
 - AI
 - syntax highlight symbols and numbers
 - some basic menus and bindings
+- helpful
+- which-key
 - Evil elisp bindings
 - Evil bindings
   - evil collection
@@ -1173,12 +1184,10 @@ Only some minor settings changes from the basic setup:
   - other evil settings
   - my evil stuff
 - emacs-in-vim-in-emacs
-- helpful
 - emacsclient
 - sway
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 - Completion
-  - LSP
   - treesitter
   - Consult
   - Marginalia
