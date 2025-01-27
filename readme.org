@@ -3280,7 +3280,6 @@ Let's see if we can hit these customizations quickly. We:
      (emacs-lisp . t)))
 #+END_SRC
 
-
 *** Evil Mode
 
 **** Basic Setup
@@ -3661,8 +3660,7 @@ Only some minor settings changes from the basic setup:
 #+end_src
 
 *** Programming Languages
-
-** JavaScript
+**** JavaScript
 
 For JS, I use RJSX Mode for its support of JSX. There are some good alternatives, I hear, so I may check them out at some point, but this works for me.
 
@@ -3701,11 +3699,9 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
 
 ** Things To Configure Next
 
-- LSP
 - Org
 - Sync
 - spell check
-- AI
 - syntax highlight symbols and numbers
 - some basic menus and bindings
 - helpful
@@ -3725,6 +3721,7 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
   - Consult
   - Marginalia
   - Embark
+- AI
 
 ** Index
 
@@ -3889,6 +3886,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<line-number-settings>>
   <<markdown-setup>>
   <<org-look-and-feel>>
+  <<org-settings>>
   <<font-definitions>>
   <<theme>>
   <<set-fixed-pitch-modes>>
@@ -3900,5 +3898,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<magit>>
   <<javascript-setup>>
   <<lsp-setup>>
+  <<copilot-setup>>
+  <<spell-check-settings>>
 #+END_SRC
 
