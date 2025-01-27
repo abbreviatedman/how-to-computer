@@ -537,20 +537,23 @@ Also sets up line numbers to be relative to the current line number. I like to u
 #+name: line-number-settings
 #+begin_src emacs-lisp
   (use-package emacs
-    :init
-    (defun crj--turn-off-line-numbers ()
-  "Turns off line numbers. Meant to be added as a hook."
-      (display-line-numbers-mode 0))
-
-    (setq display-line-numbers-type 'relative
-	  magit-disable-line-numbers nil
-	  magit-section-disable-line-numbers nil)
-    (global-display-line-numbers-mode t)
+    :preface
     (defconst crj--hooks-for-modes-without-line-numbers '(term-mode-hook
 							  vterm-mode-hook
 							  shell-mode-hook
 							  treemacs-mode-hook
 							  eshell-mode-hook))
+
+    (defun crj--turn-off-line-numbers ()
+      "Turns off line numbers. Meant to be added as a hook."
+      (display-line-numbers-mode 0))
+
+    :init
+    (set-var display-line-numbers-type 'relative
+	     magit-disable-line-numbers nil
+	     magit-section-disable-line-numbers nil)
+    (setq-default display-line-numbers-width 4)
+    (global-display-line-numbers-mode t)
     (dolist (hook crj--hooks-for-modes-without-line-numbers)
       (add-hook hook #'crj--turn-off-line-numbers)))
 #+end_src
