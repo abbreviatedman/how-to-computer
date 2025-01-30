@@ -3747,6 +3747,9 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
   - my evil stuff
 - emacs-in-vim-in-emacs
 - emacsclient
+- minor Emacs fixes
+  - yes-or-no to y-or-n
+  - no recursive deletion confirmation needed
 - sway
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 - Completion
