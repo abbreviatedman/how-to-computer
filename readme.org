@@ -629,6 +629,16 @@ Let's set Emacs up to get our environment variables correctly:
 
 Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
 
+**** Prefer ELPA Version
+
+There are some good fixes in the version of project.el that resides on ELPA, particularly regarding following submodule .gitignores.
+
+#+name: prefer-project-el-on-elpa
+#+begin_src emacs-lisp
+  (use-package project
+    :pin gnu)
+#+end_src
+
 **** Open A File On Project Open
 
 When I open a project, I usually want to open a file immediately. Let's set that.
@@ -3915,6 +3925,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<sane-defaults>>
   <<color-theme>>
   <<set-up-emacs-memory-systems>>
+  <<prefer-project-el-on-elpa>>
   <<customize-project>>
   <<customized-project-root-identification>>
   <<minibuffer-selection-interface>>
