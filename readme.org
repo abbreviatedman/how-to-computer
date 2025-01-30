@@ -3552,14 +3552,20 @@ Corfu is the close-to-bare-metal-but-still-powerful in-buffer completion package
 
 We'll configure Language Server Protocol integration using the now-built-into-Emacs package Eglot.
 
+Some noteworthy things here:
+
+- I'm trying to get orderless working with Eglot, and this isn't quite doing it for some reason. Will have to dive further into it when I have some time.
+- Eglot booster /does/ appear to be speeding up a famously slow Emacs LSP experience. It runs a separate process to work with LSP's completion server, which makes a big difference to poor old single-threaded Emacs.
+- Eldoc, the wonderful Emacs documentation library, works well with Eglot, but Eglot is a little aggressive with printing the full documentation--something that bugs me even more in VS Code, but is still annoying here. Fortunately, setting the multi-line feature to =nil= allows us to have a non-distracting one-line doc at the bottom of the screen for the value at point, while keeping the full documentation a keypress away.
+
 #+name: lsp-setup
 #+begin_src emacs-lisp
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   (use-package eglot
     :init
     (general-add-hook '(rjsx-mode-hook typescript-mode-hook clojure-mode-hook) #'eglot-ensure)
-    (set-var completion-category-overrides '((eglot (styles orderless))
-					(eglot-capf (styles orderless))))
+    (set-var eldoc-echo-area-use-multiline-p nil
+	     completion-category-overrides '((eglot (styles orderless))
+					     (eglot-capf (styles orderless))))
     :general
     (leader
       "cc" '(eglot :which-key "Run eglot in project root.")
@@ -3571,9 +3577,9 @@ We'll configure Language Server Protocol integration using the now-built-into-Em
     :config (eglot-booster-mode))
 
   (use-package cape
-      :after eglot
-      :config
-      (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
+    :after eglot
+    :config
+    (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
 #+end_src
 
 ****** Eglot Booster
