@@ -3732,9 +3732,11 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
 
 ** Things To Configure Next
 
+- auto-save settings
+- fix copilot indentation warnings
 - Org
 - Sync
-- spell check
+- AI
 - syntax highlight symbols and numbers
 - some basic menus and bindings
 - helpful
@@ -3757,7 +3759,7 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
   - Consult
   - Marginalia
   - Embark
-- AI
+- Tangle block for minimal config.
 
 ** Index
 
