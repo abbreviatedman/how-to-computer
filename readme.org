@@ -266,7 +266,7 @@ There! Now you have good-looking fonts, each with their own special purpose. And
 #+BEGIN_SRC ini :tangle ~/.gitconfig
 [user]
 	name = Colin Jaffe
-	email = abbreviatedman@posteo.net
+	email = colin.jaffe@gmail.com
 [core]
 	excludesFile = ~/.gitignore-global
 	ignorecase = false
