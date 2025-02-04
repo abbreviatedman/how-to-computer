@@ -989,7 +989,6 @@ Before evaluating the below, it's important to install =hunspell= with:
   Moonlander
   Motherload
   MuseScore
-  Na'taja
   Nakisha
   Nazareno
   Neovim
@@ -3107,6 +3106,13 @@ Before evaluating the below, it's important to install =hunspell= with:
   Ibrahim
   Morty
   Sarjeena
+  todos
+  ELPA
+  hawck
+  Setup
+  innerHTML
+  Vite
+  Props
 #+end_src
 
 **** Org Mode
