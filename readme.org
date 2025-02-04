@@ -3752,6 +3752,7 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
   - evil collection
   - 3rd party evil stuff
   - other evil settings
+  - evil next sentence motion
   - my evil stuff
 - emacs-in-vim-in-emacs
 - emacsclient
