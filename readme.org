@@ -816,8 +816,12 @@ Before evaluating the below, it's important to install =hunspell= with:
 
 ***** Spell Check Dictionary
 
+This is my list of words, but having this be the source of truth isn't quite right, since I'm always adding directly to the file. It's possible to do a reverse tangle, where changes to a file are reflected back here, and I may explore that at some point. But if I simply update this every once in a while from that file, that will do for now.
+
+If you're setting up a machine for the first time, this goes in =~/.hunspell_en_US=
+
 #+name: spelling-dictionary
-#+begin_src org :tangle ~/.hunspell_en_US
+#+begin_src org :tangle
   Na'taja
   neen
   API's
