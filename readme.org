@@ -821,7 +821,7 @@ This is my list of words, but having this be the source of truth isn't quite rig
 If you're setting up a machine for the first time, this goes in =~/.hunspell_en_US=
 
 #+name: spelling-dictionary
-#+begin_src org :tangle
+#+begin_src org
   Na'taja
   neen
   API's
