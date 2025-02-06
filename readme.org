@@ -3362,13 +3362,30 @@ Evil Nerd Commenter is a really great way to handle comments!
 
 #+NAME: sane-defaults
 #+BEGIN_SRC emacs-lisp
-  (set-var inhibit-startup-message t
-	   visible-bell t)
-
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (repeat-mode 1)
+  (pixel-scroll-precision-mode 1)
+  (global-auto-revert-mode 1)
+  (save-place-mode 1)
+  (auto-save-mode 1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (global-display-line-numbers-mode 1)
+  (general-setq vc-follow-symlinks t
+		save-interprogram-paste-before-kill t
+		recentf-max-saved-items 50
+		global-auto-revert-non-file-buffers t
+		auto-save-timeout 10
+		auto-save-no-message t
+		backup-by-copying t
+		ediff-window-setup-function 'ediff-setup-windows-plain
+		frame-inhibit-implied-resize t
+		backup-directory-alist `(("." . ,(concat user-emacs-directory "/backups")))
+		gc-cons-threshold (* 100 1000 1000)
+		uniquify-buffer-name-style 'forward
+		load-prefer-newer t)
+
 #+END_SRC
 
 *** Color Theme
