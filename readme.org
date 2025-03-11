@@ -4424,8 +4424,10 @@ First, our =.bash_profile= file should have all our paths, as well as our keycha
 
 We should also make sure our =.bashrc= file loads that =.bash_profile= code.
 
+And a couple other changes at the end!
+
 #+name: bashrc
-#+BEGIN_SRC sh :tangle ~/.bashrc
+#+BEGIN_SRC sh :tangle ~/.bashrc :noweb tangle
   # ~/.bashrc: executed by bash(1) for non-login shells.
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
   # for examples
@@ -4561,6 +4563,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<evil-integration-with-third-party-packages>>
   <<set-var>>
   <<lexical-scope>>
+  <<file-browser>>
   <<evil-style-commenting>>
   <<sane-defaults>>
   <<color-theme>>
