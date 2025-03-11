@@ -1126,9 +1126,7 @@ When I open a project, I usually want to open a file immediately. Let's set that
 
 **** Project Commands to Bind Later
 
-- =project-eshell=
 - =project-remember-under=
-- =project-find-file=
 - =project-remove=
 
 *** Package Installation System
@@ -1155,7 +1153,7 @@ What we want is, ideally, for Emacs to:
 - Get packages from version control systems when needed. (=vc-use-package=, soon to be included in Emacs)
 - Auto-update packages on startup, and also on command.
 
-#+NAME: mature-package-setup
+#+NAME: vc-package-setup
 #+BEGIN_SRC emacs-lisp
   (require 'use-package)
   (require 'use-package-ensure)
@@ -4371,6 +4369,7 @@ Only some minor settings changes from the basic setup:
 #+end_src
 
 *** Programming Languages
+
 **** JavaScript
 
 For JS, I use RJSX Mode for its support of JSX. There are some good alternatives, I hear, so I may check them out at some point, but this works for me.
@@ -4410,12 +4409,13 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
 
 ** Things To Configure Next
 
-- auto-save settings
 - fix copilot indentation warnings
+- increase Waybar font size
 - Org
 - Sync
 - AI
 - syntax highlight symbols and numbers
+- Fix elisp indentation.
 - some basic menus and bindings
 - helpful
 - which-key
@@ -4428,11 +4428,10 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
   - my evil stuff
 - emacs-in-vim-in-emacs
 - minor Emacs fixes
-  - yes-or-no to y-or-n
   - no recursive deletion confirmation needed
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 - Completion
-  - treesitter
+  - tree-sitter
   - Marginalia
 - Tangle block for minimal config.
 
@@ -4574,6 +4573,7 @@ And a couple other changes at the end!
   if [ -f ~/.bash_profile ]; then
       . ~/.bash_profile
   fi
+
   <<bash-prompt>>
   <<bash-vterm-integration>>
 #+END_SRC
@@ -4584,18 +4584,14 @@ And a couple other changes at the end!
   <<run-emacs-as-server>>
   <<package-setup>>
   <<emacs-env-integration>>
-  <<mature-package-setup>>
+  <<vc-package-setup>>
   <<custom-file-setup>>
   <<evil-mode>>
-  <<evil-number-manipulation>>
   <<define-leader-key>>
-  <<evil-integration-with-third-party-packages>>
   <<set-var>>
   <<lexical-scope>>
   <<file-browser>>
-  <<evil-style-commenting>>
   <<sane-defaults>>
-  <<color-theme>>
   <<set-up-emacs-memory-systems>>
   <<prefer-project-el-on-elpa>>
   <<customize-project>>
@@ -4613,15 +4609,20 @@ And a couple other changes at the end!
   <<theme>>
   <<set-fixed-pitch-modes>>
   <<make-line-numbers-monospaced>>
-  <<evil-org-mode-configuration>>
   <<tangle-settings>>
   <<variable-pitch-setup>>
   <<word-wrap>>
   <<magit>>
   <<javascript-setup>>
+  <<evil-number-manipulation>>
+  <<evil-org-mode-configuration>>
+  <<evil-integration-with-third-party-packages>>
+  <<evil-style-commenting>>
   <<lsp-setup>>
   <<copilot-setup>>
   <<spell-check-settings>>
+  <<search-line>>
+  <<search-shortcuts>>
   <<contextual-menus>>
   <<editable-search-results>>
   <<emacs-vterm-terminal>>
