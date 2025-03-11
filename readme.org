@@ -67,11 +67,31 @@ Now when you type your passwords in the command line, you'll get asterisks for e
 
 *** Terminals
 
+**** Bash Prompt
+
+I like having a simple prompt, with only the directory name and my password.
+
+#+name: bash-prompt
+#+begin_src sh
+  PS1='$(basename $(dirname "$PWD"))/$(basename "$PWD") => '
+#+end_src
+
+**** PATH
+
 Exporting the path variable sets up all the path settings I perform later in this doc.
 
 #+name: export-path
 #+begin_src sh
   export PATH
+#+end_src
+
+**** Installing Kitty
+
+I don't use terminals very often (I mostly use Emacs as my terminal, and even then I often use Emacs /instead of/ my terminal), but having a better and more configurable terminal is an inherent good in this world.
+
+#+begin_src sh
+  sudo apt install \
+       kitty
 #+end_src
 
 ** Fonts
@@ -616,7 +636,8 @@ This variable setter from General allows you to treat custom and non-custom vari
   (defalias 'set-var 'general-setq)
 #+end_src
 
-*** Terminal Integration
+*** Terminals
+**** Environment Variable Integration
 
 Let's set Emacs up to get our environment variables correctly:
 
@@ -625,6 +646,99 @@ Let's set Emacs up to get our environment variables correctly:
   (when (memq window-system '(mac ns x pgtk))
     (exec-path-from-shell-initialize))
 #+end_src
+
+**** Vterm
+
+For the few things where Emacs can't easily replace a terminal, =vterm= is a good choice. It's a terminal emulator that runs in Emacs, and it's pretty good. Its focus is being true to a standard terminal experience, and it's very, very good at that focus.
+
+Because it runs based on an external program, there's actually a fair amount of setup involved.
+
+***** Installation
+
+****** The Vterm Library
+
+First, we'll install =libvterm=. It may already be installed, but, if not:
+
+#+name: install-libvterm
+#+begin_src sh
+  sudo apt install \
+       libvterm-bin \
+       libtool \
+       libtool-bin
+#+end_src
+
+
+****** Vterm Emacs Package
+
+Now the actual Emacs package.
+
+#+name: emacs-vterm-terminal
+#+begin_src emacs-lisp
+  (use-package vterm
+    :preface
+    (defun crj-kill-unnamed-vterm-terminals ()
+      "Kill all vterm buffers that still have their default buffer names.
+
+  It temporarily removes confirmation of killing modified buffers.
+
+  So please be sure you want to kill all modified vterm buffers before
+  you run this command."
+      (interactive)
+      (let ((kill-buffer-query-functions
+	     (remq 'process-kill-buffer-query-function kill-buffer-query-functions)))
+	(mapc (lambda (buffer)
+		(when (string-match-p (regexp-quote "vterm") (buffer-name buffer))
+		  (kill-buffer buffer)))
+	      (buffer-list))))
+
+    :init
+    (set-var vterm-always-compile-module t
+	     vterm-max-scrollback 100000)
+    :general
+    (leader "qv" '(crj-kill-unnamed-vterm-terminals :which-key "Kill all unnamed vterm buffers."))
+    (:keymaps 'vterm-mode-map
+	      "C-c <escape>" '(vterm-send-escape :which-key "Send escape key to underlying shell.")
+	      "C-c :" '(vterm--self-insert :which-key "Send colon key to underlying shell."))
+    (:keymaps '(vterm-mode-map vterm-copy-mode-map)
+	      "C-c n" '(vterm-copy-mode :which-key "Toggle Vterm Copy Mode.")
+	      "C-c C-t" '(vterm-copy-mode :which-key "Switch to Vterm Copy Mode.")))
+
+  (use-package multi-vterm
+    :general
+    (leader "av" '(multi-vterm :which-key "Open a Vterm terminal.")))
+#+end_src
+
+***** Configuration
+
+****** Bash Integration
+
+Bash needs some functions to make the integration complete.
+
+#+name: bash-vterm-integration
+#+begin_src sh
+  vterm_printf() {
+    if [ -n "$TMUX" ] \
+        && { [ "${TERM%%-*}" = "tmux" ] \
+            || [ "${TERM%%-*}" = "screen" ]; }; then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+  }
+
+  if [ "$INSIDE_EMACS" = 'vterm' ]; then
+      clear() {
+          vterm_printf "51;Evterm-clear-scrollback";
+          tput clear;
+      }
+  fi
+#+end_src
+
+
 *** Project
 
 Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
@@ -3218,24 +3332,15 @@ Let's see if we can hit these customizations quickly. We:
     (defun crj--get-markdown-level ()
       "Helper function to get the current markdown heading level.
 
-  Used by `crj-add-markdown-header'"
+      Used by `crj-add-markdown-header'"
       (save-excursion
 	(unless (thing-at-point-looking-at markdown-regex-header)
 	  (re-search-backward markdown-regex-header nil t))
 	(markdown-outline-level)))
-
-    (defun crj-kill-quick-note ()
-      "Kills the quick-note text and frame.
-
-  Also saves it with its contents gone."
-      (interactive)
-      (kill-region (buffer-end -1) (buffer-end 1))
-      (save-buffer)
-      (delete-frame))
     :mode
     ("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . gfm-mode)
-    ;; :gfhook
-    ;; #'variable-pitch-mode
+    :gfhook
+    #'variable-pitch-mode
     :init
     (set-var markdown-indent-on-enter 'indent-and-new-item
 	     markdown-list-indent-width 2
@@ -3925,6 +4030,8 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   if [ -f ~/.bash_profile ]; then
       . ~/.bash_profile
   fi
+  <<bash-prompt>>
+  <<bash-vterm-integration>>
 #+END_SRC
 
 *** Emacs Config
@@ -3967,5 +4074,6 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<lsp-setup>>
   <<copilot-setup>>
   <<spell-check-settings>>
+  <<emacs-vterm-terminal>>
 #+END_SRC
 
