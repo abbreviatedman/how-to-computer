@@ -3814,6 +3814,17 @@ Evil Nerd Commenter is a really great way to handle comments!
       "c" #'evilnc-outer-comment))
 #+end_src
 
+**** Evil Number Manipulation
+
+#+NAME: evil-number-manipulation
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-numbers
+    :after evil
+    :general
+    (leader "+" #'evil-numbers/inc-at-pt
+	    "-" #'evil-numbers/dec-at-pt))
+#+END_SRC
+
 *** Some Sane Defaults
 
 #+NAME: sane-defaults
@@ -4393,6 +4404,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<mature-package-setup>>
   <<custom-file-setup>>
   <<evil-mode>>
+  <<evil-number-manipulation>>
   <<define-leader-key>>
   <<evil-integration-with-third-party-packages>>
   <<set-var>>
