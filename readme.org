@@ -641,6 +641,7 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "sway/scratchpad",
         "custom/media"
     ],
+
     "modules-right": [
         "mpd",
         "idle_inhibitor",
@@ -659,6 +660,7 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "tray",
         "custom/power"
     ],
+
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
@@ -668,9 +670,11 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
             "unlocked": ""
         }
     },
+
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
+
     "sway/scratchpad": {
         "format": "{icon} {count}",
         "show-empty": false,
@@ -678,6 +682,7 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
+
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
         "format-disconnected": "Disconnected ",
@@ -687,23 +692,29 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "consume-icons": {
             "on": " "
         },
+
         "random-icons": {
             "off": "<span color=\"#f53c3c\"></span> ",
             "on": " "
         },
+
         "repeat-icons": {
             "on": " "
         },
+
         "single-icons": {
             "on": "1 "
         },
+
         "state-icons": {
             "paused": "",
             "playing": ""
         },
+
         "tooltip-format": "MPD (connected)",
         "tooltip-format-disconnected": "MPD (disconnected)"
     },
+
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -711,34 +722,42 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
             "deactivated": ""
         }
     },
+
     "tray": {
         "spacing": 10
     },
+
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
+
     "cpu": {
         "format": "{usage}% ",
         "tooltip": false
     },
+
     "memory": {
         "format": "{}% "
     },
+
     "temperature": {
         "critical-threshold": 80,
         "format": "{temperatureC}°C {icon}",
         "format-icons": ["", "", ""]
     },
+
     "backlight": {
         "format": "{percent}% {icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
+
     "battery": {
         "states": {
             "warning": 30,
             "critical": 15
         },
+
         "format": "{capacity}% {icon}",
         "format-full": "{capacity}% {icon}",
         "format-charging": "{capacity}% ",
@@ -746,9 +765,11 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "format-alt": "{time} {icon}",
         "format-icons": ["", "", "", "", ""]
     },
+
     "battery#bat2": {
         "bat": "BAT2"
     },
+
     "power-profiles-daemon": {
       "format": "{icon}",
       "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
@@ -760,6 +781,7 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "power-saver": ""
       }
     },
+
     "network": {
         "format-wifi": "{essid}\n({signalStrength}%) ",
         "format-ethernet": "{ipaddr}/{cidr} ",
@@ -768,7 +790,9 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}:\n{ipaddr}/{cidr}"
     },
+
     "pulseaudio": {
+        "on-click": "pavucontrol",
         "format": "{volume}% {icon}\n{format_source}",
         "format-bluetooth": "{volume}% {icon}\n{format_source}",
         "format-bluetooth-muted": " {icon}\n{format_source}",
@@ -784,9 +808,11 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
     },
+
     "custom/media": {
+        "escape": true,
+        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null", // Script in resources folder
         "format": "{icon} {text}",
         "return-type": "json",
         "max-length": 40,
@@ -794,9 +820,8 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
             "spotify": "",
             "default": "🎜"
         },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
     },
+
     "custom/power": {
         "format" : "⏻ ",
 		"tooltip": false,
