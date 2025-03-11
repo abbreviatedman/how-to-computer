@@ -3889,6 +3889,8 @@ Evil Nerd Commenter is a really great way to handle comments!
 
 **** Minibuffer Completion
 
+***** Minibuffer Completion Interface
+
 Vertico is a popular Emacs minibuffer search interface. It gives you a simple but powerful UI for accessing whatever you're looking to access, and it does it with a minimum of code, mostly focusing on extending the built-in Emacs interface. This makes it fast to use and, importantly, easy for the devs to debug.
 
 What we'll do to configure it is:
@@ -3937,7 +3939,7 @@ Here that all is:
 	      "M-DEL" #'vertico-directory-delete-word))
 #+end_src
 
-**** Filtering Minibuffer Searches
+***** Filtering Minibuffer Searches
 
 The Orderless package is powerful and fascinating. It decides how the data you're searching is filtered as you type, and you can even search in different ways in the same search.
 
@@ -3986,6 +3988,18 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 	     orderless-style-dispatchers '(crj--vertico-orderless-dispatch)
 	     orderless-matching-styles '(orderless-flex orderless-literal orderless-regexp)
 	     completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
+***** Completion Annotation
+
+Marginalia adds annotations to the completion candidates in the minibuffer. These annotations are particular to the kind of list we're looking at--first lines of docstrings for functions, values for variables, etc.
+
+#+name: completion-annotation
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :init
+    (marginalia-mode 1)
+    :bind (:map minibuffer-local-map ("M-A" . marginalia-cycle)))
 #+end_src
 
 **** In-Buffer Completion
@@ -4113,6 +4127,8 @@ After you've installed the below package, you need to run:
 #+begin_src emacs-lisp
   (use-package copilot
     :vc (copilot :url "https://github.com/copilot-emacs/copilot.el")
+    :init
+    (set-var copilot-max-char -1)
     :config
     (add-to-list 'copilot-major-mode-alist '("rjsx" . "javascriptreact"))
     :general
@@ -4127,6 +4143,145 @@ After you've installed the below package, you need to run:
      "M-w" #'copilot-accept-completion-by-word
      "M-l" #'copilot-accept-completion-by-line
      "M-p" #'copilot-accept-completion-by-paragraph))
+#+end_src
+
+*** Contextual Menus
+
+Sometimes you choose the action, then the item. For example, if you want to delete a file, 
+
+#+name: contextual-menus
+#+begin_src emacs-lisp
+  (use-package embark
+    :preface
+    (defun crj-embark-act-noquit ()
+      "Run action but don't quit the minibuffer afterwards."
+      (interactive)
+      (let ((embark-quit-after-action nil))
+	(embark-act)))
+    :init
+    (set-var prefix-help-command #'embark-prefix-help-command)
+    :config
+    (add-to-list 'display-buffer-alist
+		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		   nil
+		   (window-parameters (mode-line-format . none))))
+    (defvar-keymap embark-help-actions
+      :doc "Keymap for actions for help searches."
+      :parent embark-general-map)
+    (add-to-list 'embark-keymap-alist '(help . embark-help-actions))
+    :general
+    (general-def (embark-become-help-map embark-symbol-map)
+      "x" #'execute-extended-command)
+    (general-def (embark-command-map embark-function-map)
+      "h" #'helpful-command)
+    (general-def (embark-become-file+buffer-map)
+      "d" #'delete-file)
+    (leader "d" '(embark-act :which-key "Launch contextual menu for thing at point."))
+    :bind
+    (("C-." . embark-act)
+     ("C->" . crj-embark-act-noquit)))
+
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+*** Search
+
+Emacs is really, /really/ great at search.
+
+Since a programmer's life is spent in text, a great text search tool is a massive gain. I've seen mouse-driven workflows really struggle at finding the code they're looking for. I've also seen people who are really good at using the mouse to find things, but they're still slower than a good keyboard-driven search. And a great keyboard-driven search? It allows you to /instantly/ find the exact part of the code that you're looking for in the exact file.
+
+Let's set up one of my favorite searching packages: =consult=.
+
+#+name: search-line
+#+begin_src emacs-lisp
+  (use-package consult
+    :vc (consult :url "https://github.com/minad/consult")
+    :commands consult-line
+    :general
+    (leader "/" '(consult-line :which-key "Search in current buffer.")))
+#+end_src
+
+Some general search shortcuts, many of them consult-powered:
+
+#+name: search-shortcuts
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (leader
+      "," '(consult-buffer :which-key "Switch buffer or open recent file.")
+      "<" '(consult-project-buffer :which-key "Switch to project-specific buffer.")
+      "TAB" '(evil-switch-to-windows-last-buffer :which-key "Previous buffer.")
+      ";" '(execute-extended-command :which-key "Run interactive command.")
+      ":" '(eval-expression :which-key "Evaluate expression.")
+      "." '(find-file :which-key "Open or create file.")
+      "y" '(consult-yank-from-kill-ring :which-key "Select from clipboard history.")))
+#+end_src
+
+**** Ripgrep
+
+Ripgrep is a great tool for running searches through text files. Let's make sure we download it.
+
+#+begin_src bash
+  sudo apt install -y ripgrep
+#+end_src
+
+**** Editable Search Results
+
+#+name: editable-search-results
+#+begin_src emacs-lisp
+  (use-package wgrep
+    :commands wgrep-change-to-wgrep-mode
+    :config (setq wgrep-auto-save-buffer t)
+    :general
+    (general-def grep-mode-map
+      "C-c C-e" '(wgrep-change-to-wgrep-mode :which-key "Switch to writable search results.")))
+
+  (use-package emacs
+    :preface
+    (defun crj-vertico-embark-export-write ()
+      "Export the current vertico results to a writable buffer if possible.
+
+  Supports exporting consult-grep to wgrep, file to wdired, and consult-location to occur-edit.
+
+  Credit to Doom Emacs."
+      (interactive)
+      (require 'embark)
+      (require 'wgrep)
+      (let* ((edit-command
+	      (pcase-let ((`(,type . ,candidates)
+			   (run-hook-with-args-until-success 'embark-candidate-collectors)))
+		(pcase type
+		  ('consult-grep #'wgrep-change-to-wgrep-mode)
+		  ('file #'wdired-change-to-wdired-mode)
+		  ('consult-location #'occur-edit-mode)
+		  (x (user-error "embark category %S doesn't support writable export" x)))))
+	     (embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
+	(embark-export)))
+    :general
+    (general-def minibuffer-local-map
+      "C-c C-e" '(crj-vertico-embark-export-write :which-key "Switch to writable search results."))
+    (general-def dired-mode-map
+      "C-c C-e" '(wdired-change-to-wdired-mode :which-key "Switch to writable search results.")))
+#+end_src
+
+**** TODO add grep as backup to ripgrep
+
+*** File Browser
+
+Dired (the "directory editor") is an Emacs file manager. And it's really really good! It's everything you used to use a file browser or a terminal for, but with all the benefits of both.
+
+I'll configure it to stick with one buffer, so as not to clutter up the buffer list.
+
+#+name: file-browser
+#+begin_src emacs-lisp
+  (put 'dired-find-alternate-file 'disabled nil)
+  (set-var dired-kill-when-opening-new-dired-buffer t)
+  (general-define-key :states 'normal
+		      :keymaps 'dired-mode-map
+		      "RET" #'dired-find-alternate-file
+		      "a" #'dired-find-file)
 #+end_src
 
 *** Emacs Git Integration
@@ -4243,16 +4398,13 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
   - evil next sentence motion
   - my evil stuff
 - emacs-in-vim-in-emacs
-- emacsclient
 - minor Emacs fixes
   - yes-or-no to y-or-n
   - no recursive deletion confirmation needed
 - Keyboard daemon to normalize Emacs keybindings everywhere (hawck)
 - Completion
   - treesitter
-  - Consult
   - Marginalia
-  - Embark
 - Tangle block for minimal config.
 
 ** Index
@@ -4418,6 +4570,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<project-root-extra-identifiers>>
   <<minibuffer-selection-interface>>
   <<search-filtering>>
+  <<completion-annotation>>
   <<in-buffer-completion>>
   <<improve-escape>>
   <<line-number-settings>>
@@ -4437,6 +4590,8 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
   <<lsp-setup>>
   <<copilot-setup>>
   <<spell-check-settings>>
+  <<contextual-menus>>
+  <<editable-search-results>>
   <<emacs-vterm-terminal>>
 #+END_SRC
 
