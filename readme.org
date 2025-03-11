@@ -956,6 +956,22 @@ First, let's use General, which commands my army of Evil keybindings. As the nam
       :prefix "SPC"))
 #+end_src
 
+**** Menus
+
+Organizing your keyboard shortcuts into menus helps tremendously with discoverability and documentation, particularly with which-key involved. The leader key feature from General has a great way to do so.
+
+#+name: define-menus
+#+begin_src emacs-lisp
+  (use-package emacs
+    :general
+    (leader
+      "a" '(:ignore t :which-key "Applications menu")
+      "v" '(:ignore t :which-key "Vterm menu")
+      "m" '(:ignore t :which-key "Markdown menu")
+      "q" '(:ignore t :which-key "Quit menu")
+      "g" '(:ignore t :which-key "Source control menu")))
+#+end_src
+
 **** Handling Escape Better
 
 Makes escape generally get you out of more prompts and other interface elements, although you should really know to reach for Emacs' C-g if that fails.
