@@ -3640,11 +3640,13 @@ If you're setting up a machine for the first time, this goes in =~/.hunspell_en_
 
 ***** Basic Settings
 
+I'll have a /lot/ more here soon, but for now, here's a keyboard shortcut for searching Org headings.
+
 #+name: org-settings
 #+begin_src emacs-lisp
-(use-package org
-  :init
-  (set-var org-startup-folded 'show2levels))
+  (use-package org
+    :general
+    (leader "m/" '(consult-org-heading :which-key "Search current headings.")))
 #+end_src
 
 ***** Org/Evil Integration
