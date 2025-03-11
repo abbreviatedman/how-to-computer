@@ -4437,6 +4437,33 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
     (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode)))
 #+end_src
 
+**** Python
+
+Install Python using Anaconda's installer. After downloading it, you'll need to execute it using:
+
+#+begin_src sh
+  chmod +x [path to Anaconda installer]
+
+  [path to Anaconda installer]
+#+end_src
+
+Then this goes at the bottom of your =bashrc= file:
+
+#+name: anaconda-setup
+#+begin_src sh
+  __conda_setup="$('/home/colin/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+      eval "$__conda_setup"
+  else
+      if [ -f "/home/colin/anaconda3/etc/profile.d/conda.sh" ]; then
+	  . "/home/colin/anaconda3/etc/profile.d/conda.sh"
+      else
+	  export PATH="/home/colin/anaconda3/bin:$PATH"
+      fi
+  fi
+  unset __conda_setup
+#+end_src
+
 ** Things To Document
 
 - Stuff from notes.md
@@ -4611,6 +4638,7 @@ And a couple other changes at the end!
 
   <<bash-prompt>>
   <<bash-vterm-integration>>
+<<anaconda-setup>>
 #+END_SRC
 
 *** Emacs Config
