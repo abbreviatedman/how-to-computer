@@ -22,7 +22,7 @@ The first thing you should do on a Debian system on a computer where software av
 
 #+BEGIN_SRC sh :tangle /sudo::/etc/apt/sources.list
   deb https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
-  deb-src https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware test
+  deb-src https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
 #+END_SRC
 
 *** Set Up Password Entry Properly
