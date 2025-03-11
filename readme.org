@@ -853,6 +853,15 @@ To install Node on Debian, you'll want to run:
 
 The greatest operating system ever created.
 
+*** Run Emacs as a Server
+
+This allows there to be one running instance of Emacs, which means that you only need to execute the config once per session, and new frames (otherwise known as windows at the OS level) pop up instantly.
+
+#+name: run-emacs-as-server
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
+
 *** Look and Feel
 
 **** Theme
@@ -4370,6 +4379,7 @@ We should also make sure our =.bashrc= file loads that =.bash_profile= code.
 *** Emacs Config
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el :noweb tangle
+  <<run-emacs-as-server>>
   <<package-setup>>
   <<emacs-env-integration>>
   <<mature-package-setup>>
