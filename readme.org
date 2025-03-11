@@ -1061,13 +1061,30 @@ Now the actual Emacs package.
     (:keymaps '(vterm-mode-map vterm-copy-mode-map)
 	      "C-c n" '(vterm-copy-mode :which-key "Toggle Vterm Copy Mode.")
 	      "C-c C-t" '(vterm-copy-mode :which-key "Switch to Vterm Copy Mode.")))
-
-  (use-package multi-vterm
-    :general
-    (leader "av" '(multi-vterm :which-key "Open a Vterm terminal.")))
 #+end_src
 
-***** Configuration
+***** Additional Configuration
+
+****** Multiple Terminal Buffers
+
+Vterm is fantastic, but its default is to have one terminal window. I want to have multiple terminals, and I want to be able to quickly:
+
+- open a new terminal
+- open a new terminal in the current project
+- switch to my most recent terminal
+- switch to the next terminal if that wasn't the right one
+
+=multi-vterm= solves these problems, and it has commands with well thought-out UI: the "next terminal" command will open a new terminal if none exist, and the "project terminal" command will open in current directory if you're not in a project buffer, switch to the dedicated project terminal if it's open, and close the dedicated project terminal if it's the active buffer.
+
+#+name: multiple-vterm-buffers
+#+begin_src emacs-lisp
+  (use-package multi-vterm
+    :general
+    (leader
+      "vn" '(multi-vterm :which-key "Open a Vterm terminal.")
+      "vo" '(multi-vterm-project :which-key "Open a Vterm terminal in the current project root.")
+      "v TAB" '(multi-vterm-next :which-key "Switch to next terminal.")))
+#+end_src
 
 ****** Bash Integration
 
@@ -4642,5 +4659,6 @@ And a couple other changes at the end!
   <<contextual-menus>>
   <<editable-search-results>>
   <<emacs-vterm-terminal>>
+  <<multiple-vterm-buffers>>
 #+END_SRC
 
