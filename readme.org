@@ -3578,6 +3578,31 @@ If you're setting up a machine for the first time, this goes in =~/.hunspell_en_
   innerHTML
   Vite
   Props
+  Ripgrep
+  Waybar
+  PokeAPI
+  Eshell
+  Destructure
+  onclick
+  ul
+  DOMContentLoaded
+  todoId
+  DOCTYPE
+  Checkwriters
+  ve
+  didn
+  Pajuste
+  Viktoria
+  Markovic
+  Lunn
+  isn
+  Dangerroom
+  parsability
+  REACTO
+  algo
+  colinjaffe
+  dyll
+  vscode
 #+end_src
 
 **** Org Mode
