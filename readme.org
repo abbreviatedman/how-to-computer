@@ -4623,6 +4623,7 @@ And a couple other changes at the end!
   <<custom-file-setup>>
   <<evil-mode>>
   <<define-leader-key>>
+  <<define-menus>>
   <<set-var>>
   <<lexical-scope>>
   <<file-browser>>
