@@ -1117,7 +1117,11 @@ When I open a project, I usually want to open a file immediately. Let's set that
     :init
     (set-var project-vc-extra-root-markers '(".dir-locals.el"
 					     "package.json"
-					     "requirements.txt")))
+					     "requirements.txt")
+	     project-vc-ignores '(".DS_Store"
+				  ".env"
+				  "node_modules"
+				  ".vscode")))
 #+end_src
 
 **** Project Commands to Bind Later
