@@ -4494,6 +4494,7 @@ Then this goes at the bottom of your =bashrc= file:
 - Sync
 - AI
 - syntax highlight symbols and numbers
+- screenshot taking
 - Fix elisp indentation.
 - some basic menus and bindings
 - helpful
