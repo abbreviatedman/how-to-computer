@@ -983,6 +983,7 @@ Organizing your keyboard shortcuts into menus helps tremendously with discoverab
     :general
     (leader
       "a" '(:ignore t :which-key "Applications menu")
+      "am" '(:ignore t :which-key "Music menu")
       "v" '(:ignore t :which-key "Vterm menu")
       "m" '(:ignore t :which-key "Markdown menu")
       "q" '(:ignore t :which-key "Quit menu")
@@ -4482,6 +4483,38 @@ Then this goes at the bottom of your =bashrc= file:
   unset __conda_setup
 #+end_src
 
+*** Applications
+
+Emacs is an Operating System! Here aer some applications it runs.
+
+Now, it's a little hazy as to what feels like an application—even when you're using Emacs as a text editor, you're using an application built on top of the Lisp interpreter.
+
+But the below feel more like applications than an in-built part of Emacs. Possibly just because they're /not/ part of most text editors?
+
+**** Radio
+
+Internet radio is still alive and well in Emacs.
+
+#+name: streaming-radio
+#+begin_src emacs-lisp
+  (use-package eradio
+    :preface
+    (defun crj-play-station-dwim ()
+      "Plays either the default station or the last station selected"
+      (interactive)
+      (eradio-play (or eradio-current-channel (cdar eradio-channels))))
+    :init
+    (general-setq eradio-channels '(("LO FLY Radio" . "http://64.20.39.8:8421/listen.pls?sid=1&t=.pls")
+				    ("SomaFM - Fluid" . "https://somafm.com/fluid.pls")
+				    ("SomaFM - Groove Salad." . "https://somafm.com/groovesalad.pls")
+				    ("SomaFM - Secret Agent" . "https://somafm.com/secretagent.pls")))
+    :general
+    (leader
+      "amr" '(crj-play-station-dwim :which-key "Play default internet radio.")
+      "amR" '(eradio-stop :which-key "Stop playing internet radio.")
+      "am C-r" '(eradio-play :which-key "Select radio station and play it.")))
+#+end_src
+
 ** Things To Document
 
 - Stuff from notes.md
@@ -4710,5 +4743,6 @@ And a couple other changes at the end!
   <<editable-search-results>>
   <<emacs-vterm-terminal>>
   <<multiple-vterm-buffers>>
+  <<streaming-radio>>
 #+END_SRC
 
