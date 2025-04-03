@@ -4727,7 +4727,7 @@ And a couple other changes at the end!
 
   <<bash-prompt>>
   <<bash-vterm-integration>>
-<<anaconda-setup>>
+  <<anaconda-setup>>
 #+END_SRC
 
 *** Emacs Config
