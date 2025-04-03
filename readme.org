@@ -672,7 +672,11 @@ So far, Sway's defaults have instead, been for me!
   # }
   # }
 
-  bar swaybar_command waybar
+  bar {
+      swaybar_command waybar
+  }
+
+  bindsym $mod+c exec pkill -SIGUSR1 '^waybar$'
 
   include /etc/sway/config.d/*
 #+end_src
