@@ -1,8 +1,45 @@
 * How To Computer
 
-This is a guide to creating the perfect computer for Colin Jaffe. But some of it may be perfect for you, and some of it may be close enough to perfect for you that you can get it the rest of the way on your own.
+** This Document Is...
 
-More than a guide, though, this effectively /is/ my computer system! I'll explain exactly how Real Soon.
+Well... what exactly?
+
+*** ... A Guide
+
+This document is a guide to creating the perfect computer, or, in a more limited sense, the perfect computer for Colin Jaffe. But some of it may well be perfect for you, and some of it may be close /enough/ to perfect for you that you can get it the rest of the way yourself.
+
+You'll find configuration and code for setting up the Sway Window Manager, GNU Emacs (and its many many packages), Visual Studio Code, Debian Linux, Git, and many other pieces that make up an example software system jigsaw puzzle.
+
+*** ... Thoughts On Computers And Code
+
+My admittedly finite experience has made me a Thought Leader in this space, or, at the least, a Thought Haver.
+
+You'll find within this document:
+
+- why we Computer,
+- how we Computer,
+- what is Computer,
+- analyses of good software design philosophies,
+- analyses of bad software design philosophies that some think are good, so I can feel good punching down,
+- analyses of bad software design philosophies that I mistakenly think are good, so I have a past self with wrong opinions to someday imagine punching the smug face of,
+- and the reverse, of course, and with also punching.
+
+*** ... A Computer System, Executable
+
+This document is executable via Emacs. Executing it will send the respective snippets of code and configuration to their desired destination. For example, my configuration for Bash will be pieced together and sent, or "tangled" to the files =~/.bashrc= and =~/.bash_profile=, so that when next I log into the computer I'll have the ability to execute the Python and Go executables, I'll have SSH settings set up, and more.
+
+I wouldn't recommend that /you/, dear reader, execute this document. You probably have lots of things in those files already. If you want to set up a computer fresh, exactly like mine, then sure! But you probably don't.
+
+However, if the "dear reader" is actually /me/, then... rock on! Execute this document, tangle those files, and go be your best self. The central goal of this document—well, debatably—is to be able to easily recreate my computer.
+
+There are other goals—some achieved, some aspirational—but this one is the most clearly achieved, the most prosaically useful—again, for me—and the most nerdily cool.
+
+*** ... A Collection Of Personal Essays
+
+I will eventually have all of the below in here:
+
+- Why we have Tech Nazis (not "Nazis" in a, like, "they're overbearing" way—we're talking /actual/ Nazis here).
+- ADHD—and imagine an indented bullet list here of topics /within/ ADHD... which is, of course, appropriate for ADHD.
 
 ** General Computer Setup
 
