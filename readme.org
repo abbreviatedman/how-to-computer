@@ -684,7 +684,7 @@ So far, Sway's defaults have instead, been for me!
 
 *** Waybar
 
-This is the configuration for Waybar, Sway's status bar. It tells me things like the time and general computer state--battery, network connection, spare memory, etc.
+This is the configuration for Waybar, Sway's status bar. It tells me the state of things--the time, laptop battery, network connection, remaining system memory, etc.
 
 I haven't added anything to it, only disabled modules I don't use, switched it to the left side, and broke text lines to make the width narrower. Programmers prefer things to be vertical, for reasons we'll get into at some point.
 
