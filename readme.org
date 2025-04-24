@@ -1,47 +1,49 @@
 * How To Computer
 
+By Colin Jaffe
+
 ** This Document Is...
 
-Well... what exactly?
+... well... what, exactly?
 
-*** ... A Guide
+*** ... A Software Guide
 
 This document is a guide to creating the perfect computer, or, in a more limited sense, the perfect computer for Colin Jaffe. But some of it may well be perfect for you, and some of it may be close /enough/ to perfect for you that you can get it the rest of the way yourself.
 
-You'll find configuration and code for setting up the Sway Window Manager, GNU Emacs (and its many many packages), Visual Studio Code, Debian Linux, Git, and many other pieces that make up an example software system jigsaw puzzle.
+You'll find configuration and code for setting up the Sway Window Manager, GNU Emacs (and its many many packages), Visual Studio Code, Debian GNU+Linux, Git, and many other pieces of software that can, when put together, be a complete computer environment.
 
-*** ... Thoughts On Computers And Code
+If you're looking for how to configure any of the software I cover, then this guide will assist you.
 
-My admittedly finite experience has made me a Thought Leader in this space, or, at the least, a Thought Haver.
-
-You'll find within this document:
-
-- why we Computer,
-- how we Computer,
-- what is Computer,
-- analyses of good software design philosophies,
-- analyses of bad software design philosophies that some think are good, so I can feel good punching down,
-- analyses of bad software design philosophies that I mistakenly think are good, so I have a past self with wrong opinions to someday imagine punching the smug face of,
-- and the reverse, of course, and with also punching.
+It is a collection of How Tos for setting up pieces of software. And when you combine those How To Softwares, you get How To Computer.
 
 *** ... A Computer System, Executable
 
-This document is executable via Emacs. Executing it will send the respective snippets of code and configuration to their desired destination. For example, my configuration for Bash will be pieced together and sent, or "tangled" to the files =~/.bashrc= and =~/.bash_profile=, so that when next I log into the computer I'll have the ability to execute the Python and Go executables, I'll have SSH settings set up, and more.
+This document is not just a /guide/ to setting up a computer system, it /is/ a computer system. You can execute this document as a computer program, and running that code will create the computing environment the document describes.
 
-I wouldn't recommend that /you/, dear reader, execute this document. You probably have lots of things in those files already. If you want to set up a computer fresh, exactly like mine, then sure! But you probably don't.
+It is a cake recipe—and the cake itself. More specifically, it's a cake recipe you can show to your oven, and your oven will read the recipe and make the cake for you. It is a magical scroll, a document that, when read aloud, alchemically transforms the world around it.
 
-However, if the "dear reader" is actually /me/, then... rock on! Execute this document, tangle those files, and go be your best self. The central goal of this document—well, debatably—is to be able to easily recreate my computer.
+We'll explore "how" an executable document works as we go, but as to the "why" of it... well, it's very useful, to have a way to clone this computer system to  a new or repaired machine, with all the configuration automatically added. But there are many ways to clone computer systems—the advantage here is that the documentation for the system and the system itself can more easily stay in sync. Anyone who's maintained technical documentation knows how often the description falls behind the current technical state. When they're one and the same, updating documentation is much less error-prone—though not fool-proof.
 
-There are other goals—some achieved, some aspirational—but this one is the most clearly achieved, the most prosaically useful—again, for me—and the most nerdily cool.
+All of that is genuinely helpful, but the main reason to keep your system configuration and documentation together in an executable format is that it's just plain /neat/. It's a fascinating process, documenting a system as you build it, balancing writing for yourself against writing for public consumption, and exploring the abilities and limits of both the system you're building and the programming magic that builds it.
 
-*** ... A Collection Of Personal Essays
+This kind of coding is known as Literate Programming, and it's one of the most nerdily cool things a human can do.
 
-I will eventually have all of the below in here:
+*** ... Thoughts On Computers And Code
 
-- Why we have Tech Nazis (not "Nazis" in a, like, "they're overbearing" way—we're talking /actual/ Nazis here).
-- ADHD—and imagine an indented bullet list here of topics /within/ ADHD... which is, of course, appropriate for ADHD.
+Sometimes, to understand why code exists in the form in which it exists, we need to take a broad overview, or a deep dive, or a long wander. This document is unafraid to cover material in the way the documenter thinks best covers it, even if it means fully erasing the already fine lines separating technical documentation from blog and blog from essay.
 
-** General Computer Setup
+** How To Read This Document
+
+You could:
+
+- Read it start to finish.
+- Skim it looking for interesting sections.
+- Skip to the sections on the software you want to configure or learn more about.
+- Or basically any way you want to enjoy it.
+  
+** The How To Guides
+
+*** General Computer Setup
 
 So you bought yourself a new computer! Did you really need to? I hope you really needed to!
 
@@ -49,11 +51,11 @@ The reason I'm writing this document is that I lost my ThinkPad, bought a Pocket
 
 So now I've wiped the Galago Pro and goddamn if I'm not going to configure it the right way this time, and make sure that when this happens again--and, obviously, that's a when not an if--I'll be more ready to start from scratch.
 
-*** What System To Use?
+**** What System To Use?
 
 I'm writing this document assuming you're using a Debian GNU+Linux system. That will make these directions match up perfectly if you are. However, with some minor tweaks you can use this setup with any Linux system, or, with more tweaks, macOS or Windows.
 
-*** Debian Package Sources
+**** Debian Package Sources
 
 The first thing you should do on a Debian system on a computer where software availability is more important than stability is switch to the Debian Unstable package sources.
 
@@ -62,13 +64,13 @@ The first thing you should do on a Debian system on a computer where software av
   deb-src https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
 #+END_SRC
 
-*** Set Up Password Entry Properly
+**** Set Up Password Entry Properly
 
 I'm not a security expert. I'm not sure I'm really an expert in any computer system or sub-system, frankly--I'm more a dilettante than a delver.
 
 All of which is to say that probably this section is wrong.
 
-**** Set Sudo Privileges Up Right
+***** Set Sudo Privileges Up Right
 
 If you find yourself unable to do sudo things without changing to root, this is how you can set things up to do sudo things without changing to root.
 
@@ -84,7 +86,7 @@ After it, you should add an equivalent line, but with your username in place of 
 
 Let's test it by running =sudo visudo=, which should open the sudoers file in your default editor with sudo privileges.
 
-**** Switching From No Password Feedback To Masked Password Feedback
+***** Switching From No Password Feedback To Masked Password Feedback
 
 By default, sudo password entry gives you no feedback as you type the password. No characters appear at all, as if you're not typing. This can be quite confusing the first time you encounter it, and leaves you more prone to mistyping your password. It's /annoying/, and the reason we do it, so that no one looking over our shoulder knows our password's length, is a truly useless security measure.
 
@@ -102,9 +104,9 @@ to:
 
 Now when you type your passwords in the command line, you'll get asterisks for each character you type.
 
-*** Terminals
+**** Terminals
 
-**** Bash Prompt
+***** Bash Prompt
 
 I like having a simple prompt, with only the directory name and my password.
 
@@ -113,7 +115,7 @@ I like having a simple prompt, with only the directory name and my password.
   PS1='$(basename $(dirname "$PWD"))/$(basename "$PWD") => '
 #+end_src
 
-**** PATH
+***** PATH
 
 Exporting the path variable sets up all the path settings I perform later in this doc.
 
@@ -122,7 +124,7 @@ Exporting the path variable sets up all the path settings I perform later in thi
   export PATH
 #+end_src
 
-**** Installing Kitty
+***** Installing Kitty
 
 I don't use terminals very often (I mostly use Emacs as my terminal, and even then I often use Emacs /instead of/ my terminal), but having a better and more configurable terminal is an inherent good in this world.
 
@@ -131,7 +133,7 @@ I don't use terminals very often (I mostly use Emacs as my terminal, and even th
        kitty
 #+end_src
 
-** Fonts
+*** Fonts
 
 Here are the steps to get my current collection of fonts.
 
@@ -305,7 +307,7 @@ And make line numbers monospaced, so they don't jump around when they go from si
 
 There! Now you have good-looking fonts, each with their own special purpose. And you also feel special now! Special and weird and unique and fully fully fontified.
 
-** Git
+*** Git
 
 - Install keychain to store your SSH passwords with =sudo apt install -y keychain=
 - Generate the key with =ssh-keygen -t ed25519 -C "[your email address]"=
@@ -352,7 +354,7 @@ And now a global gitignore file, to tell Git what files not to add to repositori
   .vscode
 #+end_src
 
-** Window Manager
+*** Window Manager
 
 Sway is a tiling window manager that's a drop-in replacement for i3. It uses Wayland instead of X11, which is a good thing, but it also means that some things that work in X11 don't work in Wayland. I'm still figuring out what those things are.
 
@@ -374,7 +376,7 @@ Tiling managers are great because:
 
 All of this adds up to a workflow where you don't think about your workflow at all. As soon as you think about switching tasks, you've done it.
 
-*** Installation
+**** Installation
 
 To install Sway on Debian, you'll want to run:
 
@@ -396,7 +398,7 @@ To install Sway on Debian, you'll want to run:
 
 This installs Sway and some good utilities for it, most especially Waybar. (Configured below.)
 
-*** Configuration
+**** Configuration
 
 My Sway configuration differs from the base in only a few ways:
 
@@ -682,7 +684,7 @@ So far, Sway's defaults have instead, been for me!
 #+end_src
 
 
-*** Waybar
+**** Waybar
 
 This is the configuration for Waybar, Sway's status bar. It tells me the state of things--the time, laptop battery, network connection, remaining system memory, etc.
 
@@ -895,11 +897,11 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
 }
 #+END_SRC
 
-** VS Code
+*** VS Code
 
 I may try to do this more automatically through the terminal, but, for now, go to VS Code's site and download their =.deb= file. Then run =sudo apt install [path to .deb file]=, and you're good.
 
-** Node
+*** Node
 
 To install Node on Debian, you'll want to run:
 
@@ -907,11 +909,11 @@ To install Node on Debian, you'll want to run:
   sudo apt install -y nodejs npm
 #+end_src
 
-** Emacs
+*** Emacs
 
 The greatest operating system ever created.
 
-*** Run Emacs as a Server
+**** Run Emacs as a Server
 
 This allows there to be one running instance of Emacs, which means that you only need to execute the config once per session, and new frames (otherwise known as windows at the OS level) pop up instantly.
 
@@ -920,9 +922,9 @@ This allows there to be one running instance of Emacs, which means that you only
   (server-start)
 #+end_src
 
-*** Look and Feel
+**** Look and Feel
 
-**** Theme
+***** Theme
 
 #+name: theme
 #+begin_src emacs-lisp
@@ -948,18 +950,18 @@ This allows there to be one running instance of Emacs, which means that you only
     (load-theme 'modus-operandi-deuteranopia :no-confirm))
 #+end_src
 
-**** Org Mode
+***** Org Mode
 
 #+name org-look-and-feel
 #+begin_src emacs-lisp
   (setq-org-link-descriptive nil)
 #+end_src
 
-**** Line Numbers
+***** Line Numbers
 
 It's been a long time since I felt this way, but I bet I would have been shocked at some point in my life to learn how much I would someday care about the numbers that go next to the lines in a document.
 
-***** Basic Line Number Settings
+****** Basic Line Number Settings
 
 Sets up line numbers to be (almost) everywhere, with the major exception being terminal modes, where they're largely unnecessary.
 
@@ -989,7 +991,7 @@ Also sets up line numbers to be relative to the current line number. I like to u
       (add-hook hook #'crj--turn-off-line-numbers)))
 #+end_src
 
-**** Wrapping Lines
+***** Wrapping Lines
 
 Turn on what in other editors would just be called "word wrap", but of course it isn't in Emacs.
 
@@ -998,9 +1000,9 @@ Turn on what in other editors would just be called "word wrap", but of course it
   (global-visual-line-mode 1)
 #+end_src
 
-*** Evil Keybindings Setup
+**** Evil Keybindings Setup
 
-**** Leader Key
+***** Leader Key
 
 First, let's use General, which commands my army of Evil keybindings. As the name suggests, it also works with leaders.
 
@@ -1014,7 +1016,7 @@ First, let's use General, which commands my army of Evil keybindings. As the nam
       :prefix "SPC"))
 #+end_src
 
-**** Menus
+***** Menus
 
 Organizing your keyboard shortcuts into menus helps tremendously with discoverability and documentation, particularly with which-key involved. The leader key feature from General has a great way to do so.
 
@@ -1031,7 +1033,7 @@ Organizing your keyboard shortcuts into menus helps tremendously with discoverab
       "g" '(:ignore t :which-key "Source control menu")))
 #+end_src
 
-**** Handling Escape Better
+***** Handling Escape Better
 
 Makes escape generally get you out of more prompts and other interface elements, although you should really know to reach for Emacs' C-g if that fails.
 
@@ -1045,7 +1047,7 @@ Also gets rid of highlighting Evil's search results with a hit of the escape key
     (global-set-key (kbd "<escape>") 'keyboard-escape-quit))
 #+end_src
 
-*** Better Variable Setter
+**** Better Variable Setter
 
 This variable setter from General allows you to treat custom and non-custom variables the same in Emacs.
 
@@ -1054,8 +1056,8 @@ This variable setter from General allows you to treat custom and non-custom vari
   (defalias 'set-var 'general-setq)
 #+end_src
 
-*** Terminals
-**** Environment Variable Integration
+**** Terminals
+***** Environment Variable Integration
 
 Let's set Emacs up to get our environment variables correctly:
 
@@ -1065,15 +1067,15 @@ Let's set Emacs up to get our environment variables correctly:
     (exec-path-from-shell-initialize))
 #+end_src
 
-**** Vterm
+***** Vterm
 
 For the few things where Emacs can't easily replace a terminal, =vterm= is a good choice. It's a terminal emulator that runs in Emacs, and it's pretty good. Its focus is being true to a standard terminal experience, and it's very, very good at that focus.
 
 Because it runs based on an external program, there's actually a fair amount of setup involved.
 
-***** Installation
+****** Installation
 
-****** The Vterm Library
+******* The Vterm Library
 
 First, we'll install =libvterm=. It may already be installed, but, if not:
 
@@ -1086,7 +1088,7 @@ First, we'll install =libvterm=. It may already be installed, but, if not:
 #+end_src
 
 
-****** Vterm Emacs Package
+******* Vterm Emacs Package
 
 Now the actual Emacs package.
 
@@ -1122,9 +1124,9 @@ Now the actual Emacs package.
 	      "C-c C-t" '(vterm-copy-mode :which-key "Switch to Vterm Copy Mode.")))
 #+end_src
 
-***** Additional Configuration
+****** Additional Configuration
 
-****** Multiple Terminal Buffers
+******* Multiple Terminal Buffers
 
 Vterm is fantastic, but its default is to have one terminal window. I want to have multiple terminals, and I want to be able to quickly:
 
@@ -1145,7 +1147,7 @@ Vterm is fantastic, but its default is to have one terminal window. I want to ha
       "v TAB" '(multi-vterm-next :which-key "Switch to next terminal.")))
 #+end_src
 
-****** Bash Integration
+******* Bash Integration
 
 Bash needs some functions to make the integration complete.
 
@@ -1174,11 +1176,11 @@ Bash needs some functions to make the integration complete.
 #+end_src
 
 
-*** Project
+**** Project
 
 Project is Emacs' built-in library for managing "projects"--collections of related files, usually all under the same directory.
 
-**** Prefer ELPA Version
+***** Prefer ELPA Version
 
 There are some good fixes in the version of project.el that resides on ELPA, particularly regarding following submodule .gitignores.
 
@@ -1188,7 +1190,7 @@ There are some good fixes in the version of project.el that resides on ELPA, par
     :pin gnu)
 #+end_src
 
-**** Open A File On Project Open
+***** Open A File On Project Open
 
 When I open a project, I usually want to open a file immediately. Let's set that.
 
@@ -1201,7 +1203,7 @@ When I open a project, I usually want to open a file immediately. Let's set that
     (leader "SPC" '(project-find-file :which-key "Find file in current project")))
 #+END_SRC
 
-**** Add Projects Based On Files
+***** Add Projects Based On Files
 
 #+name: project-root-extra-identifiers
 #+begin_src emacs-lisp
@@ -1216,14 +1218,14 @@ When I open a project, I usually want to open a file immediately. Let's set that
 				  ".vscode")))
 #+end_src
 
-**** Project Commands to Bind Later
+***** Project Commands to Bind Later
 
 - =project-remember-under=
 - =project-remove=
 
-*** Package Installation System
+**** Package Installation System
 
-**** Package Installation Basics
+***** Package Installation Basics
 
 Set up package installation, as well as draw from the repository for non-GNU packages.
 
@@ -1236,7 +1238,7 @@ Set up package installation, as well as draw from the repository for non-GNU pac
   (package-refresh-contents)
 #+END_SRC
 
-**** A More Mature System
+***** A More Mature System
 
 What we want is, ideally, for Emacs to:
 
@@ -1265,11 +1267,11 @@ What we want is, ideally, for Emacs to:
     (auto-package-update-maybe))
     #+END_SRC
 
-*** Working With Non-Code Text
+**** Working With Non-Code Text
 
-**** Spell Check
+***** Spell Check
 
-***** General Settings
+****** General Settings
 
 Before evaluating the below, it's important to install =hunspell= with:
 
@@ -1365,7 +1367,7 @@ Before evaluating the below, it's important to install =hunspell= with:
     :after flyspell-correct)
 #+end_src
 
-***** Spell Check Dictionary
+****** Spell Check Dictionary
 
 This is my list of words, but having this be the source of truth isn't quite right, since I'm always adding directly to the file. It's possible to do a reverse tangle, where changes to a file are reflected back here, and I may explore that at some point. But if I simply update this every once in a while from that file, that will do for now.
 
@@ -3695,9 +3697,9 @@ If you're setting up a machine for the first time, this goes in =~/.hunspell_en_
   vscode
 #+end_src
 
-**** Org Mode
+***** Org Mode
 
-***** Basic Settings
+****** Basic Settings
 
 I'll have a /lot/ more here soon, but for now, here's a keyboard shortcut for searching Org headings.
 
@@ -3708,7 +3710,7 @@ I'll have a /lot/ more here soon, but for now, here's a keyboard shortcut for se
     (leader "m/" '(consult-org-heading :which-key "Search current headings.")))
 #+end_src
 
-***** Org/Evil Integration
+****** Org/Evil Integration
 
 Let's integrate Evil Mode with Org mode with this nice package.
 
@@ -3739,7 +3741,7 @@ Mostly this is self-explanatory code if you dive into the variables. I do some e
 	      "gj" #'org-forward-element))
 #+end_src
 
-***** Tangle Settings
+****** Tangle Settings
 
 For now, all we're specifying is that when a directory doesn't exist in a file path we're tangling, we should make that directory.
 
@@ -3750,7 +3752,7 @@ For now, all we're specifying is that when a directory doesn't exist in a file p
     (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes")))
 #+end_src
 
-***** Emacs Lisp Code Block Settings
+****** Emacs Lisp Code Block Settings
 
 All Emacs Lisp should have lexical scope, by default.
 
@@ -3761,7 +3763,7 @@ All Emacs Lisp should have lexical scope, by default.
     (setq org-babel-default-header-args:emacs-lisp '((:lexical . "yes"))))
 #+end_src
 
-**** Markdown
+***** Markdown
 
 The not-quite-as-good-as-Org-but-more-universally-spoken markup language.
 
@@ -3844,7 +3846,7 @@ Let's see if we can hit these customizations quickly. We:
 	      "C-d" nil))
 #+end_src
 
-*** Avoiding Mixing Init File and Custom File
+**** Avoiding Mixing Init File and Custom File
 
 #+NAME: custom-file-setup
 #+BEGIN_SRC emacs-lisp
@@ -3855,7 +3857,7 @@ Let's see if we can hit these customizations quickly. We:
       (write-region "" nil custom-file)))
 #+END_SRC
 
-*** Org Babel Settings
+**** Org Babel Settings
 
 #+NAME: org-babel-settings
 #+BEGIN_SRC emacs-lisp
@@ -3866,9 +3868,9 @@ Let's see if we can hit these customizations quickly. We:
      (emacs-lisp . t)))
 #+END_SRC
 
-*** Evil Mode
+**** Evil Mode
 
-**** Basic Setup
+***** Basic Setup
 
 #+NAME: evil-mode
 #+BEGIN_SRC emacs-lisp
@@ -3883,7 +3885,7 @@ Let's see if we can hit these customizations quickly. We:
     (setq evil-want-keybinding t))
     #+END_SRC
 
-**** Evil Bindings For Other Packages
+***** Evil Bindings For Other Packages
 
 This famous package contains Evil bindings for many many other packages.
 
@@ -3915,7 +3917,7 @@ This famous package contains Evil bindings for many many other packages.
       "e" '(evil-collection-unimpaired-next-error :which-key "Go to next error.")))
 #+end_src
 
-**** Evil-Style Commenting
+***** Evil-Style Commenting
 
 Evil Nerd Commenter is a really great way to handle comments!
 
@@ -3935,7 +3937,7 @@ Evil Nerd Commenter is a really great way to handle comments!
       "c" #'evilnc-outer-comment))
 #+end_src
 
-**** Evil Number Manipulation
+***** Evil Number Manipulation
 
 #+NAME: evil-number-manipulation
 #+BEGIN_SRC emacs-lisp
@@ -3946,7 +3948,7 @@ Evil Nerd Commenter is a really great way to handle comments!
 	    "-" #'evil-numbers/dec-at-pt))
 #+END_SRC
 
-*** Some Sane Defaults
+**** Some Sane Defaults
 
 #+NAME: sane-defaults
 #+BEGIN_SRC emacs-lisp
@@ -3976,7 +3978,7 @@ Evil Nerd Commenter is a really great way to handle comments!
 
 #+END_SRC
 
-*** Color Theme
+**** Color Theme
 
 #+NAME: color-theme
 #+BEGIN_SRC emacs-lisp
@@ -3997,7 +3999,7 @@ Evil Nerd Commenter is a really great way to handle comments!
   (load-theme 'modus-operandi t)
 #+END_SRC
 
-*** Remember Things
+**** Remember Things
 
 #+NAME: set-up-emacs-memory-systems
 #+BEGIN_SRC emacs-lisp
@@ -4006,11 +4008,11 @@ Evil Nerd Commenter is a really great way to handle comments!
   (savehist-mode 1)
 #+END_SRC
 
-*** Completion
+**** Completion
 
-**** Minibuffer Completion
+***** Minibuffer Completion
 
-***** Minibuffer Completion Interface
+****** Minibuffer Completion Interface
 
 Vertico is a popular Emacs minibuffer search interface. It gives you a simple but powerful UI for accessing whatever you're looking to access, and it does it with a minimum of code, mostly focusing on extending the built-in Emacs interface. This makes it fast to use and, importantly, easy for the devs to debug.
 
@@ -4060,7 +4062,7 @@ Here that all is:
 	      "M-DEL" #'vertico-directory-delete-word))
 #+end_src
 
-***** Filtering Minibuffer Searches
+****** Filtering Minibuffer Searches
 
 The Orderless package is powerful and fascinating. It decides how the data you're searching is filtered as you type, and you can even search in different ways in the same search.
 
@@ -4111,7 +4113,7 @@ Once you're used to this speedy filtering process, it /greatly/ cuts down on the
 	     completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
-***** Completion Annotation
+****** Completion Annotation
 
 Marginalia adds annotations to the completion candidates in the minibuffer. These annotations are particular to the kind of list we're looking at--first lines of docstrings for functions, values for variables, etc.
 
@@ -4123,9 +4125,9 @@ Marginalia adds annotations to the completion candidates in the minibuffer. Thes
     :bind (:map minibuffer-local-map ("M-A" . marginalia-cycle)))
 #+end_src
 
-**** In-Buffer Completion
+***** In-Buffer Completion
 
-***** Corfu
+****** Corfu
 
 Corfu is the close-to-bare-metal-but-still-powerful in-buffer completion package. It's increasingly popular in the Emacs community for good reason.
 
@@ -4177,7 +4179,7 @@ Corfu is the close-to-bare-metal-but-still-powerful in-buffer completion package
     (setq tab-always-indent 'complete))
 #+end_src
 
-***** LSP
+****** LSP
 
 We'll configure Language Server Protocol integration using the now-built-into-Emacs package Eglot.
 
@@ -4211,7 +4213,7 @@ Some noteworthy things here:
     (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
 #+end_src
 
-****** Eglot Booster
+******* Eglot Booster
 
 Emacs is single-threaded, which is a problem for LSP access. This Rust crate/Emacs package combo creates a separate process for handling LSP, then passes it to Emacs.
 
@@ -4236,7 +4238,7 @@ Now install the Rust crate using =cargo= in your terminal:
   cargo install emacs-lsp-booster
 #+end_src
 
-***** Copilot
+****** Copilot
 
 To get in-buffer suggestions as you type from GitHub Copilot, you must first have a GitHub account. You must also have =npm=.
 
@@ -4266,7 +4268,7 @@ After you've installed the below package, you need to run:
      "M-p" #'copilot-accept-completion-by-paragraph))
 #+end_src
 
-*** Contextual Menus
+**** Contextual Menus
 
 Sometimes you choose the action, then the item. For example, if you want to delete a file, 
 
@@ -4307,7 +4309,7 @@ Sometimes you choose the action, then the item. For example, if you want to dele
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
-*** Search
+**** Search
 
 Emacs is really, /really/ great at search.
 
@@ -4340,7 +4342,7 @@ Some general search shortcuts, many of them consult-powered:
       "y" '(consult-yank-from-kill-ring :which-key "Select from clipboard history.")))
 #+end_src
 
-**** Ripgrep
+***** Ripgrep
 
 Ripgrep is a great tool for running searches through text files. Let's make sure we download it.
 
@@ -4348,7 +4350,7 @@ Ripgrep is a great tool for running searches through text files. Let's make sure
   sudo apt install -y ripgrep
 #+end_src
 
-**** Editable Search Results
+***** Editable Search Results
 
 #+name: editable-search-results
 #+begin_src emacs-lisp
@@ -4387,9 +4389,9 @@ Ripgrep is a great tool for running searches through text files. Let's make sure
       "C-c C-e" '(wdired-change-to-wdired-mode :which-key "Switch to writable search results.")))
 #+end_src
 
-**** TODO add grep as backup to ripgrep
+***** TODO add grep as backup to ripgrep
 
-*** File Browser
+**** File Browser
 
 Dired (the "directory editor") is an Emacs file manager. And it's really really good! It's everything you used to use a file browser or a terminal for, but with all the benefits of both.
 
@@ -4405,7 +4407,7 @@ I'll configure it to stick with one buffer, so as not to clutter up the buffer l
 		      "a" #'dired-find-file)
 #+end_src
 
-*** Emacs Git Integration
+**** Emacs Git Integration
 
 Like many (most?) emacsers, I use Magit to manage Git. It's the best interface to Git--as powerful as the CLI, with a better keyboard-driven interface.
 
@@ -4462,9 +4464,9 @@ Only some minor settings changes from the basic setup:
     (leader "gr" '(browse-at-remote :which-key "Browse repo's remote.")))
 #+end_src
 
-*** Programming Languages
+**** Programming Languages
 
-**** JavaScript
+***** JavaScript
 
 For JS, I use RJSX Mode for its support of JSX. There are some good alternatives, I hear, so I may check them out at some point, but this works for me.
 
@@ -4496,7 +4498,7 @@ For JS, I use RJSX Mode for its support of JSX. There are some good alternatives
     (add-to-list 'auto-mode-alist '("\\.ts\\'" . rjsx-mode)))
 #+end_src
 
-**** Python
+***** Python
 
 Install Python using Anaconda's installer. After downloading it, you'll need to execute it using:
 
@@ -4524,7 +4526,7 @@ Then this goes at the bottom of your =bashrc= file:
   unset __conda_setup
 #+end_src
 
-*** Applications
+**** Applications
 
 Emacs is an Operating System! Here aer some applications it runs.
 
@@ -4532,7 +4534,7 @@ Now, it's a little hazy as to what feels like an application—even when you're 
 
 But the below feel more like applications than an in-built part of Emacs. Possibly just because they're /not/ part of most text editors?
 
-**** Radio
+***** Radio
 
 Internet radio is still alive and well in Emacs.
 
@@ -4556,12 +4558,12 @@ Internet radio is still alive and well in Emacs.
       "am C-r" '(eradio-play :which-key "Select radio station and play it.")))
 #+end_src
 
-** Things To Document
+*** Things To Document
 
 - Stuff from notes.md
 - wormhole - apt install
 
-** Things To Configure Next
+*** Things To Configure Next
 
 - fix copilot indentation warnings
 - increase Waybar font size
@@ -4590,11 +4592,11 @@ Internet radio is still alive and well in Emacs.
   - Marginalia
 - Tangle block for minimal config.
 
-** Index
+**** Index
 
 Here is where I tangle all the source blocks in this file, in the order I'd like and to the files I want.
 
-*** Bash Config
+***** Bash Config
 
 First, our =.bash_profile= file should have all our paths, as well as our keychain setup.
 
@@ -4734,7 +4736,7 @@ And a couple other changes at the end!
   <<anaconda-setup>>
 #+END_SRC
 
-*** Emacs Config
+***** Emacs Config
 
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el :noweb tangle
   <<run-emacs-as-server>>
