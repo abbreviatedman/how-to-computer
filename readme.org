@@ -43,17 +43,33 @@ You could:
   
 ** The How To Guides
 
-*** General Computer Setup
+*** Setting Up A Debian GNU+Linux Operating System
 
-So you bought yourself a new computer! Did you really need to? I hope you really needed to!
+We'll explore how to set up a new operating system, going from installing a fresh system on your computer to configuring it to suit your needs.
 
-The reason I'm writing this document is that I lost my ThinkPad, bought a Pocket Reform that I almost immediately messed up by remapping the keys in such a way that I can't use its weird startup keyboard shortcut, and then somehow (still not sure how) deeply messed up the system that was on my Galago Pro.
+But first, some background on why I chose this /particular/ operating system.
 
-So now I've wiped the Galago Pro and goddamn if I'm not going to configure it the right way this time, and make sure that when this happens again--and, obviously, that's a when not an if--I'll be more ready to start from scratch.
+**** Why Linux?
 
-**** What System To Use?
 
-I'm writing this document assuming you're using a Debian GNU+Linux system. That will make these directions match up perfectly if you are. However, with some minor tweaks you can use this setup with any Linux system, or, with more tweaks, macOS or Windows.
+
+**** Which Linux System To Use?
+
+Anyone who's spent time exploring the many Linux distributions (also known as "distro-hopping") finds that after a while they're not only all great but they're also all pretty much the /same/ kind of great. Which one you pick hardly matters.
+
+That isn't to say that there are /no/ significant differences between them. Arch Linux has great software repositories, if you want the most up-to-date software as it's released. Many Ubuntu-based systems put in a lot of work to give you a great experience with little or no configuration needed. Some distributions swap out significant parts of the system for alternatives, such as the initialization/daemon system or the display server. And some Linux distros have vastly different approaches, like Qubes, which wraps every app in its own system-within-a-system for security, or TAILS, which anonymizes all your internet traffic and deletes your data when you're done, or any of the various Linux systems designed to be run entirely from a flash drive.
+
+But when you're a user trying to get something done with Linux, the fundamental way most of these systems work is the same. You're still using a web browser and a text editor and any communication apps you like to do your daily work, and you're installing mostly the same software as on any other system, using that system's repositories. If you want to use a different graphical interface to your system, one more like Windows or more like macOS or entirely unlike either of those in a variety of increasingly wild ways, well, that's not actually tied to your Linux distribution. Just install the packages from your distribution's repositories and do some configuration, just like any other piece of software.
+
+Any advantages one Linux system's approach has are mostly or entirely counterbalanced by disadvantages of that approach, and those advantages and disadvantages are fairly slight to begin with.
+
+**** So Why Debian In Particular?
+
+I've chosen Debian because one of my computers already comes with a Debian system, and that system is customized by the computer manufacturers to work especially with it. I don't want to go through the effort of re-installing a new system on it and re-customizing that new system in the same way the manufacturers did with Debian. So when I was setting up my first system after getting the Debian computer, it made sense to stick with Debian, rather than fracture this document into sections on, say, Debian and Arch.
+
+I've been pleasantly surprised with Debian so far. Many distributions build on Debian (MX Linux, and Ubuntu, and the many distributions which then proceed to build on top of Ubuntu), and for good reason—it's rock solid and time-tested, having been around for __ years. Using Debian itself instead of what builds on top of it means a slightly more minimalist setup, but I've found so far that Debian out of the box works seamlessly without requiring the extra setup I imagined.
+
+Again, these Linux distributions are, for the most part, not all /that/ different from one another!
 
 **** Debian Package Sources
 
