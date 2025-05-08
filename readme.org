@@ -514,6 +514,9 @@ So far, Sway's defaults have instead, been for me!
   # Start an Emacs window
   bindsym $mod+Return exec emacsclient -c -a ""
 
+  # Start a browser.
+  bindsym $mod+Shift+Return exec firefox
+
   # Start a quick note-taking Emacs window
   bindsym $mod+q exec emacsclient -cn -a "" ~/Documents/org-stuff/quick-note.md
 
