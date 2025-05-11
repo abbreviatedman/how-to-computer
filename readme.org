@@ -675,6 +675,9 @@ So far, Sway's defaults have instead, been for me!
   # Special key to take a screenshot with grim
   bindsym Print exec grim
 
+  # And run Flameshot on startup.
+  exec_always flameshot
+
   #
   # Status Bar:
   #
@@ -916,6 +919,22 @@ I haven't added anything to it, only disabled modules I don't use, switched it t
 }
 #+END_SRC
 
+*** Utilities
+
+Some random little apps.
+
+**** Screenshots
+
+I've found Flameshot to be just fine.
+
+You can install it with:
+
+#+begin_src bash
+sudo apt install -y \
+  flameshot
+#+end_src
+
+And then we run it on startup, and it sits in Sway's toolbar. (See Sway config.)
 *** VS Code
 
 I may try to do this more automatically through the terminal, but, for now, go to VS Code's site and download their =.deb= file. Then run =sudo apt install [path to .deb file]=, and you're good.
