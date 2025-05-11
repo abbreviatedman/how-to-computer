@@ -3893,17 +3893,16 @@ Let's see if we can hit these customizations quickly. We:
 
 #+NAME: evil-mode
 #+BEGIN_SRC emacs-lisp
-  (setq evil-want-keybinding nil)
-
-  (use-package evil
-    :ensure t
-    :init
-    (setq evil-want-keybinding t
-	  evil-want-fine-undo t)
-    :custom (evil-undo-system 'undo-redo)
-    :config
-    (evil-mode 1)
-    (setq evil-want-keybinding t))
+    (use-package evil
+      :ensure t
+      :preface (setq evil-want-keybinding nil)
+      :init
+      (setq evil-want-keybinding nil
+	    evil-want-fine-undo t)
+      :custom (evil-undo-system 'undo-redo)
+      :config
+      (evil-mode 1)
+      (setq evil-want-keybinding t))
     #+END_SRC
 
 ***** Evil Bindings For Other Packages
