@@ -32,7 +32,9 @@ There's a group of people in this world who need extra sugar on top to make work
 
 Sometimes, to understand why code exists in the form in which it exists, we need to take a broad overview, or a deep dive, or a long wander. This document is unafraid to cover material in the way the documenter thinks best covers it, even if it means fully erasing the already fine lines separating technical documentation from blog and blog from essay.
 
-** How To Read This Document
+** How To...
+
+*** Read This Document
 
 We'll go in chronological order of what should be set up first as we build out our system, but that's for the main intended audience: myself, in the future, setting up a new computer. If you're not in that limited audience, then please feel free to instead:
 
@@ -41,9 +43,7 @@ We'll go in chronological order of what should be set up first as we build out o
 - See if you can find the weirdest bit of writing here.
 - Or read it in any order you want, or don't read anything at all after this sentence, or read the whole thing backwards, or just about do anything that suits you.
   
-** The How To Guides
-
-*** Setting Up A Debian GNU+Linux Operating System
+*** Set Up A Debian GNU+Linux Operating System
 
 We'll explore how to set up a new operating system, going from installing a fresh system on your computer to configuring it.
 
