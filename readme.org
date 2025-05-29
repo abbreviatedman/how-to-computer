@@ -153,8 +153,15 @@ Exporting the path variable sets up all the path settings I perform later in thi
 
 I don't use terminals very often (I mostly use Emacs as my terminal, and even then I often use Emacs /instead of/ my terminal), but having a better and more configurable terminal is an inherent good in this world.
 
+First, enter this command:
+
 #+begin_src sh
-  sudo apt install \
+    sudo apt install \
+#+end_src
+
+Then enter the following:
+
+#+begin_src sh
        kitty
 #+end_src
 
@@ -173,10 +180,15 @@ Make a local fonts directory and move all Input Sans fonts into it with the foll
   mv [path to InputSans directory]/*.ttf ~/.local/share/fonts
 #+end_src
 
-Install the following fonts:
+Install some more fonts by first entering this command:
 
 #+begin_src sh
-  sudo apt install -y \
+      sudo apt install -y \
+#+end_src
+
+Then enter the following:
+
+#+begin_src sh
        fonts-noto \
        fonts-font-awesome \
        fonts-cardo
