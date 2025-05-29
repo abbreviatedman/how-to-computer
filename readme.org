@@ -3871,7 +3871,7 @@ Let's see if we can hit these customizations quickly. We:
     (defun crj--get-markdown-level ()
       "Helper function to get the current markdown heading level.
 
-      Used by `crj-add-markdown-header'"
+  Used by `crj-add-markdown-header'"
       (save-excursion
 	(unless (thing-at-point-looking-at markdown-regex-header)
 	  (re-search-backward markdown-regex-header nil t))
