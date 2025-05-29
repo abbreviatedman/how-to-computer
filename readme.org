@@ -4473,6 +4473,17 @@ I'll configure it to stick with one buffer, so as not to clutter up the buffer l
 		      "a" #'dired-find-file)
 #+end_src
 
+**** Shell
+
+Running shells within Emacs is helpful sometimes, even if using pure Emacs is generally preferable.
+
+We'll do some minor setup for the shell. For now, simply skipping the confirmation before starting a new buffer.
+
+#+name: shell-setup
+#+begin_src emacs-lisp
+  (set-var async-shell-command-buffer #'new-buffer)
+#+end_src
+
 **** Emacs Git Integration
 
 Like many (most?) emacsers, I use Magit to manage Git. It's the best interface to Git--as powerful as the CLI, with a better keyboard-driven interface.
@@ -4817,6 +4828,7 @@ And a couple other changes at the end!
   <<lexical-scope>>
   <<file-browser>>
   <<sane-defaults>>
+  <<shell-setup>>
   <<set-up-emacs-memory-systems>>
   <<prefer-project-el-on-elpa>>
   <<customize-project>>
