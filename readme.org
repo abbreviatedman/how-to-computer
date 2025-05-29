@@ -8,7 +8,7 @@ By Colin Jaffe
 
 *** ... A Software Guide
 
-This document is a guide to creating the perfect computer, or, in a more limited sense, the perfect computer for Colin Jaffe. But some of it may well be perfect for you, and some of it may be close /enough/ to perfect for you that you can use this system as a starting point.
+This document is a guide to creating the perfect computer, or, in a more limited sense, the perfect computer for Colin Jaffe. But some of it may well be perfect for you, and the rest of it may be close /enough/ to perfect for you that you can use this system as a starting point.
 
 In this document, you'll find configuration and code for setting up the Sway Window Manager, GNU Emacs (and its many many packages), Visual Studio Code, Debian GNU+Linux, Git, and many other pieces of software that can, when put together, be a complete computer environment.
 
