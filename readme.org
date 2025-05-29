@@ -8,9 +8,9 @@ By Colin Jaffe
 
 *** ... A Software Guide
 
-This document is a guide to creating the perfect computer, or, in a more limited sense, the perfect computer for Colin Jaffe. But some of it may well be perfect for you, and some of it may be close /enough/ to perfect for you that you can get it the rest of the way yourself.
+This document is a guide to creating the perfect computer, or, in a more limited sense, the perfect computer for Colin Jaffe. But some of it may well be perfect for you, and some of it may be close /enough/ to perfect for you that you can use this system as a starting point.
 
-You'll find configuration and code for setting up the Sway Window Manager, GNU Emacs (and its many many packages), Visual Studio Code, Debian GNU+Linux, Git, and many other pieces of software that can, when put together, be a complete computer environment.
+In this document, you'll find configuration and code for setting up the Sway Window Manager, GNU Emacs (and its many many packages), Visual Studio Code, Debian GNU+Linux, Git, and many other pieces of software that can, when put together, be a complete computer environment.
 
 If you're looking for how to configure any of the software I cover, then this guide will assist you.
 
@@ -20,13 +20,13 @@ It is a collection of How Tos for setting up pieces of software. And when you co
 
 This document is not just a /guide/ to setting up a computer system, it /is/ a computer system. You can execute this document as a computer program, and running that code will create the computing environment the document describes.
 
-It is a cake recipe—and the cake itself. More specifically, it's a cake recipe you can show to your oven, and your oven will read the recipe and make the cake for you. It is a magical scroll, a document that, when read aloud, alchemically transforms the world around it.
+It is a cake recipe—and the cake itself. A more exact metaphor would be that this document is a cake recipe that you can just hold up to your oven, and your oven will read the recipe and make the cake for you. It is a magical scroll, a document that, when read aloud, alchemically transforms the world around it.
 
-We'll explore "how" an executable document works as we go, but as to the "why" of it... well, it's very useful, to have a way to clone this computer system to  a new or repaired machine, with all the configuration automatically added. But there are many ways to clone computer systems—the advantage here is that the documentation for the system and the system itself can more easily stay in sync. Anyone who's maintained technical documentation knows how often the description falls behind the current technical state. When they're one and the same, updating documentation is much less error-prone—though not fool-proof.
+We'll explore "how" an executable document works as we go, but as to the "why" of it... well, it's very useful to have a way to clone this computer system to a new or repaired machine, with all the configuration automatically added. But there are many other ways to clone computer systems—the advantage here is that the documentation for the system and the system itself can more easily stay in sync. Anyone who's maintained technical documentation knows how often the description falls behind the current technical state. When they're one and the same, when the medium is the message, then updating documentation becomes much less error-prone—though not fool-proof.
 
-All of that is genuinely helpful, but the main reason to keep your system configuration and documentation together in an executable format is that it's just plain /neat/. It's a fascinating process, documenting a system as you build it, balancing writing for yourself against writing for public consumption, and exploring the abilities and limits of both the system you're building and the programming magic that builds it.
+All of that is genuinely helpful, but the main "why" for keeping your system configuration and documentation together in an executable format is that it's just plain /neat/. It's a fascinating process, documenting a system as you build it, balancing writing for yourself against writing for public consumption, and exploring the abilities and limits of both the system you're building and the programming magic that builds it.
 
-This kind of coding is known as Literate Programming, and it's one of the most nerdily cool things a human can do.
+There's a group of people in this world who need extra sugar on top to make work interesting, and I appear to be among their number.
 
 *** ... Thoughts On Computers And Code
 
@@ -34,34 +34,43 @@ Sometimes, to understand why code exists in the form in which it exists, we need
 
 ** How To Read This Document
 
-You could:
+We'll go in chronological order of what should be set up first as we build out our system, but that's for the main intended audience: myself, in the future, setting up a new computer. If you're not in that limited audience, then please feel free to instead:
 
-- Read it start to finish.
-- Skim it looking for interesting sections.
-- Skip to the sections on the software you want to configure or learn more about.
-- Or basically any way you want to enjoy it.
+- Go straight to the bits on software you want to learn more about or configure.
+- Skim this document to see what sparks your interest.
+- See if you can find the weirdest bit of writing here.
+- Or read it in any order you want, or don't read anything at all after this sentence, or read the whole thing backwards, or just about do anything that suits you.
   
 ** The How To Guides
 
 *** Setting Up A Debian GNU+Linux Operating System
 
-We'll explore how to set up a new operating system, going from installing a fresh system on your computer to configuring it to suit your needs.
+We'll explore how to set up a new operating system, going from installing a fresh system on your computer to configuring it.
 
 But first, some background on why I chose this /particular/ operating system.
 
-**** Why Linux?
-
-
-
 **** Which Linux System To Use?
 
-Anyone who's spent time exploring the many Linux distributions (also known as "distro-hopping") finds that after a while they're not only all great but they're also all pretty much the /same/ kind of great. Which one you pick hardly matters.
+Anyone who's spent time exploring the many Linux distributions (also known as "distro-hopping") finds after a while that not only are they all /great/, but they're also great in almost the /exact/ same way. Which one you pick hardly matters. Let's dive into why.
 
-That isn't to say that there are /no/ significant differences between them. Arch Linux has great software repositories, if you want the most up-to-date software as it's released. Many Ubuntu-based systems put in a lot of work to give you a great experience with little or no configuration needed. Some distributions swap out significant parts of the system for alternatives, such as the initialization/daemon system or the display server. And some Linux distros have vastly different approaches, like Qubes, which wraps every app in its own system-within-a-system for security, or TAILS, which anonymizes all your internet traffic and deletes your data when you're done, or any of the various Linux systems designed to be run entirely from a flash drive.
+Let me preface this by saying that there are of course /some/ significant differences between Linux distributions. Arch Linux has great software repositories, if you want the most up-to-date software as it's released. Many Ubuntu-based systems put in a lot of work to give you a great experience "out of the box", with little or no configuration needed. On the more significant side, some distributions swap out important parts of the system for alternatives, such as the initialization/daemon system or the display server. And some Linux distros have highly specialized approaches, like Qubes, which wraps every app in its own system-within-a-system for security, or TAILS, which anonymizes all your internet traffic and deletes your data when you're done, or any of the various Linux systems designed to be run entirely from a flash drive.
 
-But when you're a user trying to get something done with Linux, the fundamental way most of these systems work is the same. You're still using a web browser and a text editor and any communication apps you like to do your daily work, and you're installing mostly the same software as on any other system, using that system's repositories. If you want to use a different graphical interface to your system, one more like Windows or more like macOS or entirely unlike either of those in a variety of increasingly wild ways, well, that's not actually tied to your Linux distribution. Just install the packages from your distribution's repositories and do some configuration, just like any other piece of software.
+But if you're not working with niche use cases like extreme privacy or security—if you're a user just trying to get something /done/ with Linux—the fundamental way most of these systems work is the same. Once you get going, you're using a web browser and a text editor and likely some communication apps, and you're installing these apps in almost the exact same way. Even If you want to use an entirely different graphical interface to your system, one more like Windows or more like macOS or entirely unlike either of those in a variety of increasingly wild ways, well, with any Linux system, that's just another piece of software you can install.
 
-Any advantages one Linux system's approach has are mostly or entirely counterbalanced by disadvantages of that approach, and those advantages and disadvantages are fairly slight to begin with.
+Most advantages one Linux system's approach has are mostly or entirely counterbalanced by disadvantages of that same approach, and those advantages and disadvantages are fairly slight to begin with.
+
+***** How I Learned To Stop Worrying And Love All Linux Systems
+
+I've spent at least a year using each of the following Linux systems as my "daily driver":
+
+- Manjaro, which is built on top of Arch
+- MX Linux, which is built on top of Debian
+- various systems built on top of Ubuntu (which is itself built on top of Debian)—namely Regolith Linux, Pop!_OS, and KDE neon
+
+The most prominent difference you notice as a user of these systems is simply what the Graphical User Interface looks like (the GUI). Once I discovered how much I like the GUI the i3wm tiling window manager gives you (more on this later!), I spent considerable time with two systems that provided it: Manjaro and Regolith. The major differences between these two lie in:
+
+- the repositories used for package installation (Arch repos or Ubuntu repos)
+- the way the creators and maintainers of the system pre-configured the GUI
 
 **** So Why Debian In Particular?
 
