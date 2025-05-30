@@ -34,7 +34,7 @@ Sometimes, to understand why code exists in the form in which it exists, we need
 
 ** How To...
 
-*** Read This Document
+*** How To Read This Document
 
 We'll go in chronological order of what should be set up first as we build out our system, but that's for the main intended audience: myself, in the future, setting up a new computer. If you're not in that limited audience, then please feel free to instead:
 
@@ -43,7 +43,7 @@ We'll go in chronological order of what should be set up first as we build out o
 - See if you can find the weirdest bit of writing here.
 - Or read it in any order you want, or don't read anything at all after this sentence, or read the whole thing backwards, or just about do anything that suits you.
   
-*** Set Up A Debian GNU+Linux Operating System
+*** How To Set Up A Debian GNU+Linux Operating System
 
 We'll explore how to set up a new operating system, going from installing a fresh system on your computer to configuring it.
 
@@ -111,7 +111,7 @@ After it, you should add an equivalent line, but with your username in place of 
 
 Let's test it by running =sudo visudo=, which should open the sudoers file in your default editor with sudo privileges.
 
-***** Switching From No Password Feedback To Masked Password Feedback
+****** Switching From No Password Feedback To Masked Password Feedback
 
 By default, sudo password entry gives you no feedback as you type the password. No characters appear at all, as if you're not typing. This can be quite confusing the first time you encounter it, and leaves you more prone to mistyping your password. It's /annoying/, and the reason we do it, so that no one looking over our shoulder knows our password's length, is a truly useless security measure.
 
