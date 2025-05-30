@@ -1013,7 +1013,7 @@ This allows there to be one running instance of Emacs, which means that you only
 
 #+name org-look-and-feel
 #+begin_src emacs-lisp
-  (setq-org-link-descriptive nil)
+  (add-hook 'org-mode-hook #'org-toggle-link-display)
 #+end_src
 
 ***** Line Numbers
