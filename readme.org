@@ -53,13 +53,11 @@ But first, some background on why I chose this /particular/ operating system.
 
 Anyone who's spent time exploring the many Linux distributions (also known as "distro-hopping") finds after a while that not only are they all /great/, but they're also great in almost the /exact/ same way. Which one you pick hardly matters. Let's dive into why.
 
-Let me preface this by saying that there are of course /some/ significant differences between Linux distributions. Arch Linux has great software repositories, if you want the most up-to-date software as it's released. Many Ubuntu-based systems put in a lot of work to give you a great experience "out of the box", with little or no configuration needed. On the more significant side, some distributions swap out important parts of the system for alternatives, such as the initialization/daemon system or the display server. And some Linux distros have highly specialized approaches, like Qubes, which wraps every app in its own system-within-a-system for security, or TAILS, which anonymizes all your internet traffic and deletes your data when you're done, or any of the various Linux systems designed to be run entirely from a flash drive.
+Let me preface this by saying that there are of course /some/ significant differences between Linux distributions. Arch Linux has great software repositories, if you want the most up-to-date software as it's released. Many Ubuntu-based systems put in a lot of work to give you a great experience "out of the box", with little or no configuration needed. On the more significant side, some distributions swap out important parts of the system for alternatives, such as the initialization/daemon system or the display server. And some Linux distros have highly specialized approaches, like Qubes, which wraps every app in its own system-within-a-system to prevent any app from affecting others or the system as a whole, or TAILS, which anonymizes all your internet traffic and deletes your data when you're done, or any of the various Linux systems designed to be run entirely from a flash drive.
 
-But if you're not working with niche use cases like extreme privacy or security—if you're a user just trying to get something /done/ with Linux—the fundamental way most of these systems work is the same. Once you get going, you're using a web browser and a text editor and likely some communication apps, and you're installing these apps in almost the exact same way. Even If you want to use an entirely different graphical interface to your system, one more like Windows or more like macOS or entirely unlike either of those in a variety of increasingly wild ways, well, with any Linux system, that's just another piece of software you can install.
+But if you're not working with niche use cases like extreme privacy or security—if you're a user just trying to get something /done/ with Linux—the fundamental way most of these systems work is the same. Once you get going, you're using a web browser and a text editor and likely some communication apps, and you're installing these apps in almost the exact same way. Even if you want to use an entirely different graphical interface to your system, one more like Windows or more like macOS or entirely unlike either of those, graphical interfaces on a spectrum of increasingly wild ways... well, with any Linux system, the graphical interface is just another piece of software you can install. In other words, any non-niche Linux system can fairly easily be made to look, feel, and act mostly like any other, so your starting point hardly matters.
 
 Most advantages one Linux system's approach has are mostly or entirely counterbalanced by disadvantages of that same approach, and those advantages and disadvantages are fairly slight to begin with.
-
-***** How I Learned To Stop Worrying And Love All Linux Systems
 
 I've spent at least a year using each of the following Linux systems as my "daily driver":
 
@@ -72,15 +70,31 @@ The most prominent difference you notice as a user of these systems is simply wh
 - the repositories used for package installation (Arch repos or Ubuntu repos)
 - the way the creators and maintainers of the system pre-configured the GUI
 
+Since most repos provide /basically/ the same software, and any pre-configured GUI can be re-configured, I stopped sweating the small differences, and am now using a basic Debian system, and simply installed an i3wm-like system on top of it.
+
 **** So Why Debian In Particular?
 
-I've chosen Debian because one of my computers already comes with a Debian system, and that system is customized by the computer manufacturers to work especially with it. I don't want to go through the effort of re-installing a new system on it and re-customizing that new system in the same way the manufacturers did with Debian. So when I was setting up my first system after getting the Debian computer, it made sense to stick with Debian, rather than fracture this document into sections on, say, Debian and Arch.
+If all userland Linux systems are essentially the same (as opposed to serverland or securityland or justplainweirdland systems), then Debian is... as good as any of them. It's one of the oldest still-active Linux distributions, and therefore has an established reputation of stability and usability. There's less layered on top, and while I'm not always a fan of minimalism, this does mean that one group is in charge of it from top to bottom, reducing the chances of conflicts that arise from one group disagreeing with or simply misunderstanding the pieces they're building on top of. So that's good.
 
-I've been pleasantly surprised with Debian so far. Many distributions build on Debian (MX Linux, and Ubuntu, and the many distributions which then proceed to build on top of Ubuntu), and for good reason—it's rock solid and time-tested, having been around for __ years. Using Debian itself instead of what builds on top of it means a slightly more minimalist setup, but I've found so far that Debian out of the box works seamlessly without requiring the extra setup I imagined.
+But since these systems are all about equal, I've chosen Debian simply because one of my computers already came with a Debian system, and that particular Debian system is customized by the tiny computer manufacturers to work especially with it. I don't want to go through the effort of re-installing a new system on it and re-customizing that new system in the same way the manufacturers did with Debian. So when I was setting up my first system after getting the Debian computer, it made sense to stick with Debian, rather than fracture this document into sections on, say, Debian and Arch.
+
+I've been pleasantly surprised with Debian so far. Many distributions build their software on top of Debian—MX Linux, and Ubuntu, and the many distributions which then proceed to build on top of Ubuntu—, and for good reason—it's rock solid and time-tested, having been around since 1993. Using Debian itself instead of what builds on top of it means a slightly more minimalist setup, but I've found so far that Debian out of the box works seamlessly without requiring the extra setup I imagined.
 
 Again, these Linux distributions are, for the most part, not all /that/ different from one another!
 
-**** Debian Package Sources
+**** Installing Debian
+
+Go to [[Debian Linux's website][http://www.debian.org]], download the installation disk, copy it to a flash drive, insert it into your computer, and boot up from it. Then follow the graphical installer's directions.
+
+I'm (clearly) not particularly interested in walking through how to install it in great detail. There are some great how-to articles on this! This is not one of them.
+
+**** Configuring Debian
+
+So you've installed Debian, and you're ready to dive in. First, let's set up a few things.
+
+***** Debian Package Sources
+
+On any computer, you have to decide where to get your software from.
 
 The first thing you should do on a Debian system on a computer where software availability is more important than stability is switch to the Debian Unstable package sources.
 
@@ -89,13 +103,13 @@ The first thing you should do on a Debian system on a computer where software av
   deb-src https://deb.debian.org/debian/ unstable main contrib non-free non-free-firmware
 #+END_SRC
 
-**** Set Up Password Entry Properly
+***** Set Up Password Entry Properly
 
 I'm not a security expert. I'm not sure I'm really an expert in any computer system or sub-system, frankly--I'm more a dilettante than a delver.
 
 All of which is to say that probably this section is wrong.
 
-***** Set Sudo Privileges Up Right
+****** Set Sudo Privileges Up Right
 
 If you find yourself unable to do sudo things without changing to root, this is how you can set things up to do sudo things without changing to root.
 
