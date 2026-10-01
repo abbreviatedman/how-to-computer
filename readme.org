@@ -1,3 +1,44 @@
+* TODO
+
+- document xremap
+
+to install:
+
+sudo curl -fsSL https://blakegardner.github.io/xremap-debian/xremap-archive-keyring.gpg | \
+  sudo tee /usr/share/keyrings/xremap-archive-keyring.gpg > /dev/null
+
+add xremap.sources file
+
+sudo apt update && sudo apt install xremap-gnome or xremap-wlroots (for sway)
+
+to run:
+
+add ~/.xremap.yml (this should actually be editable only with sudo!
+
+run:
+
+sudo xremap --watch=config,device ~/.xremap.yml
+
+- run xremap as a service once we have sway
+
+- document grabbing vs code signing key
+- add directions for logging in as root (=su -u=)
+- expand section on visudo
+- add where the .sources files go
+	- xremap
+	- microsoft
+- apt install:
+	- vim
+	- geeqie
+	- git
+	- curl
+	- chromium
+	- whois
+
+- install other browsers
+	- opera
+	- vivaldi
+
 * How To Computer
 
 By Colin Jaffe
@@ -4650,9 +4691,6 @@ Internet radio is still alive and well in Emacs.
 #+end_src
 
 *** Things To Document
-
-- Stuff from notes.md
-- wormhole - apt install
 
 *** Things To Configure Next
 
