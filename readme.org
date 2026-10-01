@@ -195,15 +195,6 @@ I like having a simple prompt, with only the directory and its parent directory.
 PS1='\[\033[01;32m\]$(basename $(dirname "$PWD"))/$(basename "$PWD") \[\033[01;34m\]=> \[\033[00m\]'
 #+end_src
 
-***** PATH
-
-Exporting the path variable sets up all the path settings I perform later in this doc.
-
-#+name: export-path
-#+begin_src sh
-  export PATH
-#+end_src
-
 ***** Installing Kitty
 
 I don't use terminals very often (I mostly use Emacs as my terminal, and even then I often use Emacs /instead of/ my terminal), but having a better and more configurable terminal is an inherent good in this world.
