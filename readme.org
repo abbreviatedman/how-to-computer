@@ -439,11 +439,11 @@ There! Now you have good-looking fonts, each with their own special purpose. And
 And now a global gitignore file, to tell Git what files not to add to repositories.
 
 #+begin_src org :tangle ~/.gitignore-global
-  .env
-  node_modules
-  .dir-locals.el
-  .DS_Store
-  .vscode
+.env
+node_modules
+.dir-locals.el
+.DS_Store
+.vscode
 #+end_src
 
 *** Window Manager
