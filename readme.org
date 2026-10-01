@@ -188,11 +188,11 @@ Now when you type your passwords in the command line, you'll get asterisks for e
 
 ***** Bash Prompt
 
-I like having a simple prompt, with only the directory name and my password.
+I like having a simple prompt, with only the directory and its parent directory.
 
 #+name: bash-prompt
 #+begin_src sh
-  PS1='$(basename $(dirname "$PWD"))/$(basename "$PWD") => '
+PS1='\[\033[01;32m\]$(basename $(dirname "$PWD"))/$(basename "$PWD") \[\033[01;34m\]=> \[\033[00m\]'
 #+end_src
 
 ***** PATH
