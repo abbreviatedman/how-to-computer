@@ -28,7 +28,7 @@ sudo xremap --watch=config,device ~/.xremap.yml
 	- xremap
 	- microsoft
 - apt install:
-	- vim
+	- vim-gtk
 	- geeqie
 	- git
 	- curl
