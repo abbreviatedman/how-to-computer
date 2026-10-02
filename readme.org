@@ -186,15 +186,6 @@ Now when you type your passwords in the command line, you'll get asterisks for e
 
 **** Terminals
 
-***** Bash Prompt
-
-I like having a simple prompt, with only the directory and its parent directory.
-
-#+name: bash-prompt
-#+begin_src sh
-PS1='\[\033[01;32m\]$(basename $(dirname "$PWD"))/$(basename "$PWD") \[\033[01;34m\]=> \[\033[00m\]'
-#+end_src
-
 ***** PATH
 
 Exporting the path variable sets up all the path settings I perform later in this doc.
@@ -2719,13 +2710,11 @@ If you're setting up a machine for the first time, this goes in =~/.hunspell_en_
   vpn
   Aakre
   EOB
-  vterm
   cmd
   bindkey
   crj
   turn
   kbd
-  vterm
   Sedgwick
   backtab
   Keymaps
@@ -4347,7 +4336,7 @@ Install Rust if you don't already have it by running this in your terminal:
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 #+end_src
 
-Then we'll add to our path in =.bashrc= so that Rust's =cargo= commands are executable:
+Then we'll add to our path in =.profile= so that Rust's =cargo= commands are executable:
 
 #+name: cargo-path
 #+begin_src sh
@@ -4728,18 +4717,16 @@ Here is where I tangle all the source blocks in this file, in the order I'd like
 
 ***** Bash Config
 
-First, our =.bash_profile= file should have all our paths, as well as our keychain setup.
+First, our =.profile= file should have all our paths, as well as our keychain setup.
 
-#+name: bash_profile
-#+begin_src sh :tangle ~/.bash_profile :noweb tangle
-  <<cargo-path>>
+#+name: profile
+#+begin_src sh :tangle ~/.profile :noweb tangle
   <<export-path>>
+  <<cargo-path>>
   <<keychain-settings>>
 #+end_src
 
-We should also make sure our =.bashrc= file loads that =.bash_profile= code.
-
-And a couple other changes at the end!
+Our bashrc file has a bunch of standard stuff, plus my prompt and anaconda/vterm integration.
 
 #+name: bashrc
 #+BEGIN_SRC sh :tangle ~/.bashrc :noweb tangle
@@ -4777,6 +4764,9 @@ And a couple other changes at the end!
       color_prompt=
   fi
 
+  # Use a color prompt if you can, otherwise, one without color.
+  # Either way, I like a prompt with minimal information--the current
+  # directory plus the parent directory for context.
   if [ "$color_prompt" = yes ]; then
       PS1='\[\033[01;32m\]$(basename $(dirname "$PWD"))/$(basename "$PWD") \[\033[01;34m\]=> \[\033[00m\]'
   else
@@ -4785,16 +4775,25 @@ And a couple other changes at the end!
 
   unset color_prompt
 
-  # enable color support of ls and also add handy aliases
+  # Alias definitions.
+  # At some point, I may move all these aliases to another file.
+
+  # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+  if [ -f ~/.bash_aliases ]; then
+      . ~/.bash_aliases
+  fi
+
+  # enable color support of ls, as well as aliases to add color to commands automatically
   if [ -x /usr/bin/dircolors ]; then
       test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
       alias ls='ls --color=auto'
-      #alias dir='dir --color=auto'
-      #alias vdir='vdir --color=auto'
+      alias dir='dir --color=auto'
+      alias vdir='vdir --color=auto'
 
-      #alias grep='grep --color=auto'
-      #alias fgrep='fgrep --color=auto'
-      #alias egrep='egrep --color=auto'
+      alias grep='grep --color=auto'
+      alias fgrep='fgrep --color=auto'
+      alias egrep='egrep --color=auto'
   fi
 
   # colored GCC warnings and errors
@@ -4804,15 +4803,6 @@ And a couple other changes at the end!
   #alias ll='ls -l'
   #alias la='ls -A'
   #alias l='ls -CF'
-
-  # Alias definitions.
-  # You may want to put all your additions into a separate file like
-  # ~/.bash_aliases, instead of adding them here directly.
-  # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-  if [ -f ~/.bash_aliases ]; then
-      . ~/.bash_aliases
-  fi
 
   # enable programmable completion features (you don't need to enable
   # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -4825,11 +4815,17 @@ And a couple other changes at the end!
       fi
   fi
 
-  <<export-path>>
-  <<bash-prompt>>
   <<bash-vterm-integration>>
   <<anaconda-setup>>
 #+END_SRC
+
+Finally, our .bash_profile should source the above files.
+
+#+BEGIN_SRC sh :tangle ~/.bash_profile :noweb tangle
+[ -r "$HOME/.profile" ] && . "$HOME/.profile"
+[ -r "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+#+END_SRC
+
 
 ***** Emacs Config
 
